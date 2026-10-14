@@ -121,6 +121,85 @@ graph TD
 
 ---
 
+## Move History with SQLite
+
+The console simulator automatically stores games and moves in a local SQLite database. The history remains available after closing and restarting the application.
+
+Each new game created with `gerafrota` or `lefrota` receives a unique identifier. Both manual moves (`rajada`) and automatically generated moves (`simula`) are saved.
+
+### Stored Information
+
+The database contains three related tables:
+
+- **`games`** — game identifier and start time.
+- **`moves`** — associated game, move number, and recording time.
+- **`shots`** — shot order, coordinates, outcome, and ship type when applicable.
+
+Each move contains three shots. Possible outcomes are:
+
+| Outcome | Meaning |
+|---------|---------|
+| `MISS` | The shot hit water. |
+| `HIT` | The shot hit a ship. |
+| `SUNK` | The shot sank a ship. |
+| `REPEATED` | The position had already been targeted. |
+| `INVALID` | The position is outside the board. |
+
+Each move and its three shots are saved in a single transaction. If an insertion fails, the transaction is rolled back to prevent incomplete records.
+
+### Viewing the History
+
+Run the console application through `battleship.Main`.
+
+List saved games:
+
+```text
+jogos
+```
+
+Display the history of a specific game:
+
+```text
+historico GAME_ID
+```
+
+Replace `GAME_ID` with the full identifier shown by the `jogos` command. History can be viewed immediately after restarting the application, without starting a new game.
+
+### Database Setup
+
+Persistence uses the `org.xerial:sqlite-jdbc` dependency, managed by Maven. No separate database server is required.
+
+The database and its tables are created automatically at:
+
+```text
+data/battleship.db
+```
+
+This path is relative to the application's working directory. The database file is excluded from version control.
+
+If a persistence error occurs, the application reports the error and stops the console session. Previously committed records remain stored.
+
+### Tests
+
+Run the persistence tests with:
+
+```bash
+mvn -Dtest=SqliteMoveRepositoryTest test
+```
+
+The tests use temporary databases and cover:
+
+- Reading saved results through a new repository instance.
+- Preserving shot order and invalid coordinates.
+- Keeping games separate and rejecting duplicate moves.
+- Rolling back a complete move when the third shot cannot be saved.
+
+### Scope
+
+Persistence currently supports the console simulator. It stores historical moves; it does not restore a saved game for continued play or persist moves from the REST server.
+
+---
+
 ## 🧪 Testing
 We use high-coverage unit testing to ensure game stability. Run tests using:
 ```bash

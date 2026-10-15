@@ -1,7 +1,9 @@
 package battleship;
 
 import java.util.Scanner;
+import java.util.Locale;
 
+import org.apache.commons.lang3.time.StopWatch;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
@@ -51,6 +53,7 @@ public class Tasks {
 
 		IFleet myFleet = null;
 		IGame game = null;
+		StopWatch moveTimer = new StopWatch();
 		menuHelp();
 
 		System.out.print("> ");
@@ -60,11 +63,13 @@ public class Tasks {
 
 			switch (command) {
 				case GERAFROTA:
+					moveTimer.reset();
 					myFleet = Fleet.createRandom();
 					game = new Game(myFleet, repository);
 					game.printMyBoard(false, true);
 					break;
 				case LEFROTA:
+					moveTimer.reset();
 					myFleet = buildFleet(in);
 					game = new Game(myFleet, repository);
 					game.printMyBoard(false, true);
@@ -80,6 +85,7 @@ public class Tasks {
 				case RAJADA:
 					if (game != null) {
 						game.readEnemyFire(in);
+						printMoveTime(moveTimer, game);
 						myFleet.printStatus();
 						game.printMyBoard(true, false);
 
@@ -92,7 +98,10 @@ public class Tasks {
 				case SIMULA:
 					if (game != null) {
 						while (game.getRemainingShips() > 0){
+							moveTimer.reset();
+							moveTimer.start();
 							game.randomEnemyFire();
+							printMoveTime(moveTimer, game);
 							myFleet.printStatus();
 							game.printMyBoard(true, false);
 							try {
@@ -169,10 +178,30 @@ public class Tasks {
 				default:
 					System.out.println("Que comando é esse??? Repete ...");
 			}
+			
+			if (game != null && !moveTimer.isStarted()) {
+				moveTimer.reset();
+				moveTimer.start();
+			}
 			System.out.print("> ");
 			command = in.next();
 		}
 		System.out.println(GOODBYE_MESSAGE);
+	}
+
+	/**
+	 * Apresenta a duração de uma rajada concluída, antes de mostrar o tabuleiro.
+	 * A medição termina depois da leitura/geração e do processamento dos tiros.
+	 * A duração é apresentada em segundos, com três casas decimais.
+	 *
+	 * @param moveTimer cronómetro em execução para a rajada concluída
+	 * @param game partida cujo histórico contém a rajada acabada de processar
+	 */
+	private static void printMoveTime(StopWatch moveTimer, IGame game) {
+		moveTimer.stop();
+		int moveNumber = game.getAlienMoves().get(game.getAlienMoves().size() - 1).getNumber();
+		System.out.printf(Locale.ROOT, "Tempo da jogada %d: %.3f s%n",
+				moveNumber, moveTimer.getDuration().toMillis() / 1000.0);
 	}
 
 	/**

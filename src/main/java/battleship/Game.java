@@ -169,6 +169,9 @@ public class Game implements IGame
 	private Integer countSinks;
 	private int moveNumber;
 
+	private SqliteMoveRepository moveRepository;
+	private String gameId;
+
 	//------------------------------------------------------------------
 	public Game(IFleet myFleet)
 	{
@@ -184,6 +187,15 @@ public class Game implements IGame
 		this.countRepeatedShots = 0;
 		this.countHits = 0;
 		this.countSinks = 0;
+	}
+
+	public Game(IFleet myFleet, SqliteMoveRepository repository) {
+		this(myFleet);
+
+		this.moveRepository = Objects.requireNonNull(repository);
+		this.gameId = repository.createGame();
+
+		System.out.println("ID do jogo: " + gameId);
 	}
 
 	@Override
@@ -355,6 +367,10 @@ public class Game implements IGame
 		alienMoves.add(move);
 
 		moveNumber++;
+
+		if (moveRepository != null) {
+			moveRepository.saveMove(gameId, move);
+		}
 	}
 
 	/**

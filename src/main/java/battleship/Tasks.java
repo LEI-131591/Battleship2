@@ -1,10 +1,14 @@
 package battleship;
 
 import java.util.Scanner;
+import java.util.Locale;
 
+import org.apache.commons.lang3.time.StopWatch;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
+
+import java.nio.file.Path;
 
 /**
  * The type Tasks.
@@ -38,8 +42,18 @@ public class Tasks {
 	 */
 	public static void menu() {
 
+		Path databaseFile = Path.of("data", "battleship.db");
+
+		SqliteMoveRepository repository =
+				new SqliteMoveRepository(databaseFile);
+
+		System.out.println(
+				"Base de dados: " + databaseFile.toAbsolutePath().normalize()
+		);
+
 		IFleet myFleet = null;
 		IGame game = null;
+		StopWatch moveTimer = new StopWatch();
 		menuHelp();
 
 		System.out.print("> ");
@@ -49,13 +63,15 @@ public class Tasks {
 
 			switch (command) {
 				case GERAFROTA:
+					moveTimer.reset();
 					myFleet = Fleet.createRandom();
-					game = new Game(myFleet);
+					game = new Game(myFleet, repository);
 					game.printMyBoard(false, true);
 					break;
 				case LEFROTA:
+					moveTimer.reset();
 					myFleet = buildFleet(in);
-					game = new Game(myFleet);
+					game = new Game(myFleet, repository);
 					game.printMyBoard(false, true);
 					break;
 				case STATUS:
@@ -69,6 +85,7 @@ public class Tasks {
 				case RAJADA:
 					if (game != null) {
 						game.readEnemyFire(in);
+						printMoveTime(moveTimer, game);
 						myFleet.printStatus();
 						game.printMyBoard(true, false);
 
@@ -81,7 +98,10 @@ public class Tasks {
 				case SIMULA:
 					if (game != null) {
 						while (game.getRemainingShips() > 0){
+							moveTimer.reset();
+							moveTimer.start();
 							game.randomEnemyFire();
+							printMoveTime(moveTimer, game);
 							myFleet.printStatus();
 							game.printMyBoard(true, false);
 							try {
@@ -104,13 +124,84 @@ public class Tasks {
                 case AJUDA:
                     menuHelp();
                     break;
+				case "jogos": {
+					var savedGames = repository.findGames();
+
+					if (savedGames.isEmpty()) {
+						System.out.println("Ainda não existem jogos guardados.");
+					} else {
+						for (var savedGame : savedGames) {
+							System.out.printf(
+									"ID: %s | Início: %s%n",
+									savedGame.id(),
+									savedGame.startedAt()
+							);
+						}
+					}
+
+					break;
+				}
+				case "historico": {
+					String requestedGameId = in.nextLine().trim();
+
+					if (requestedGameId.isEmpty()) {
+						System.out.println("Utilização: historico ID_DO_JOGO");
+						break;
+					}
+
+					var history = repository.findHistory(requestedGameId);
+
+					if (history.isEmpty()) {
+						System.out.println(
+								"Não existem jogadas para esse ID. Usa 'jogos' para verificar os IDs."
+						);
+					} else {
+						for (var shot : history) {
+							String shipInfo = shot.shipType() == null
+									? ""
+									: " — " + shot.shipType();
+
+							System.out.printf(
+									"Jogada %d | Tiro %d | %s%d | %s%s%n",
+									shot.moveNumber(),
+									shot.shotOrder(),
+									shot.row(),
+									shot.column(),
+									shot.outcome(),
+									shipInfo
+							);
+						}
+					}
+
+					break;
+				}
 				default:
 					System.out.println("Que comando é esse??? Repete ...");
+			}
+			
+			if (game != null && !moveTimer.isStarted()) {
+				moveTimer.reset();
+				moveTimer.start();
 			}
 			System.out.print("> ");
 			command = in.next();
 		}
 		System.out.println(GOODBYE_MESSAGE);
+	}
+
+	/**
+	 * Apresenta a duração de uma rajada concluída, antes de mostrar o tabuleiro.
+	 * A medição termina depois da leitura/geração e do processamento dos tiros.
+	 * A duração é apresentada em segundos, com três casas decimais.
+	 *
+	 * @param moveTimer cronómetro em execução para a rajada concluída
+	 * @param game partida cujo histórico contém a rajada acabada de processar
+	 */
+	private static void printMoveTime(StopWatch moveTimer, IGame game) {
+		moveTimer.stop();
+		int moveNumber = game.getAlienMoves().get(game.getAlienMoves().size() - 1).getNumber();
+		System.out.printf(Locale.ROOT, "Tempo da jogada %d: %.3f s%n",
+				moveNumber, moveTimer.getDuration().toMillis() / 1000.0);
 	}
 
 	/**
@@ -127,6 +218,8 @@ public class Tasks {
 		System.out.println("- " + SIMULA + ": Simula um jogo completo.");
 		System.out.println("- " + TIROS + ": Lista os tiros válidos realizados (* = tiro em navio, o = tiro na água)");
 		System.out.println("- " + DESISTIR + ": Encerra o jogo.");
+		System.out.println("- jogos: Lista os jogos guardados.");
+		System.out.println("- historico ID_DO_JOGO: Mostra as jogadas desse jogo.");
 		System.out.println("===============================================================");
 	}
 	/**

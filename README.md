@@ -125,6 +125,18 @@ graph TD
 
 The console simulator automatically stores games and moves in a local SQLite database. The history remains available after closing and restarting the application.
 
+### Exporting the Current Game to CSV
+
+After starting a game with `gerafrota` or `lefrota` and firing at least one
+`rajada`, enter `exportar` to save the current game's shots to a CSV file. The
+command remains available after the final ship is sunk. Enter `desisto` to leave
+the console or start another game.
+
+Each row contains the move number, row, column, and outcome (`MISS`, `HIT`,
+`SUNK`, `REPEATED`, or `INVALID`). Files are created under `data/exports/` with
+unique names, so exporting again does not overwrite an earlier file. This
+feature uses Apache Commons CSV and does not export past games from SQLite.
+
 Each new game created with `gerafrota` or `lefrota` receives a unique identifier. Both manual moves (`rajada`) and automatically generated moves (`simula`) are saved.
 
 ### Stored Information

@@ -77,6 +77,13 @@
 	</properties>
 
 	<dependencies>
+		<!-- commons csv -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-csv</artifactId>
+			<version>1.14.1</version>
+		</dependency>
+
 		<!-- Spring Boot REST server (includes Jackson, embedded Tomcat) -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

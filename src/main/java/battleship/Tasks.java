@@ -1,5 +1,6 @@
 package battleship;
 
+import java.io.IOException;
 import java.util.Scanner;
 import java.util.Locale;
 
@@ -36,6 +37,7 @@ public class Tasks {
 	private static final String MAPA = "mapa";
 	private static final String STATUS = "estado";
 	private static final String SIMULA = "simula";
+	private static final String EXPORTAR = "exportar";
 
 	/**
 	 * This task also tests the fighting element of a round of three shots
@@ -84,6 +86,10 @@ public class Tasks {
 					break;
 				case RAJADA:
 					if (game != null) {
+						if (game.getRemainingShips() == 0) {
+							System.out.println("A partida terminou. Usa 'exportar' ou inicia uma nova frota.");
+							break;
+						}
 						game.readEnemyFire(in);
 						printMoveTime(moveTimer, game);
 						myFleet.printStatus();
@@ -91,12 +97,16 @@ public class Tasks {
 
 						if (game.getRemainingShips() == 0) {
 							game.over();
-							System.exit(0);
+							System.out.println("Usa 'exportar' para guardar as rajadas desta partida.");
 						}
 					}
 					break;
 				case SIMULA:
 					if (game != null) {
+						if (game.getRemainingShips() == 0) {
+							System.out.println("A partida terminou. Usa 'exportar' ou inicia uma nova frota.");
+							break;
+						}
 						while (game.getRemainingShips() > 0){
 							moveTimer.reset();
 							moveTimer.start();
@@ -113,13 +123,25 @@ public class Tasks {
 
 						if (game.getRemainingShips() == 0) {
 							game.over();
-							System.exit(0);
+							System.out.println("Usa 'exportar' para guardar as rajadas desta partida.");
 						}
 					}
 					break;
 				case TIROS:
 					if (game != null)
 						game.printMyBoard(true, true);
+					break;
+				case EXPORTAR:
+					if (game == null || game.getAlienMoves().isEmpty()) {
+						System.out.println("Ainda não existem rajadas para exportar.");
+						break;
+					}
+					try {
+						Path file = MoveCsvExporter.export(game.getAlienMoves(), Path.of("data", "exports"));
+						System.out.println("Rajadas exportadas para: " + file.toAbsolutePath().normalize());
+					} catch (IOException | IllegalArgumentException e) {
+						System.err.println("Não foi possível exportar as rajadas: " + e.getMessage());
+					}
 					break;
                 case AJUDA:
                     menuHelp();
@@ -179,7 +201,7 @@ public class Tasks {
 					System.out.println("Que comando é esse??? Repete ...");
 			}
 			
-			if (game != null && !moveTimer.isStarted()) {
+			if (game != null && game.getRemainingShips() > 0 && !moveTimer.isStarted()) {
 				moveTimer.reset();
 				moveTimer.start();
 			}
@@ -217,6 +239,7 @@ public class Tasks {
 		System.out.println("- " + RAJADA + ": Realiza uma rajada de disparos.");
 		System.out.println("- " + SIMULA + ": Simula um jogo completo.");
 		System.out.println("- " + TIROS + ": Lista os tiros válidos realizados (* = tiro em navio, o = tiro na água)");
+		System.out.println("- " + EXPORTAR + ": Exporta as rajadas da partida atual para CSV.");
 		System.out.println("- " + DESISTIR + ": Encerra o jogo.");
 		System.out.println("- jogos: Lista os jogos guardados.");
 		System.out.println("- historico ID_DO_JOGO: Mostra as jogadas desse jogo.");

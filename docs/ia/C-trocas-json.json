@@ -1,0 +1,376 @@
+{
+  "date": "2026-10-17",
+  "commit": "17aa27b0f8fccdb87183de1c4f96997460328beb",
+  "gameId": "b034b9f2-1666-4314-90e5-d76ee8b88a30",
+  "method": "O assistente escolheu e introduziu as rajadas na consola real através de ferramentas. Os tiros de ensaio foram orientados para cobrir o protocolo; o mapa do programa estava visível. Não é um ensaio de estratégia oculta da parte D.",
+  "rounds": [
+    {
+      "number": 1,
+      "shots": [
+        {
+          "row": "A",
+          "column": 5
+        },
+        {
+          "row": "C",
+          "column": 10
+        },
+        {
+          "row": "F",
+          "column": 5
+        }
+      ],
+      "console_command": "rajada A5 C10 F5",
+      "response": {
+        "validShots": 3,
+        "sunkBoats": [],
+        "repeatedShots": 0,
+        "outsideShots": 0,
+        "hitsOnBoats": [],
+        "missedShots": 3
+      }
+    },
+    {
+      "number": 2,
+      "shots": [
+        {
+          "row": "A",
+          "column": 5
+        },
+        {
+          "row": "A",
+          "column": 5
+        },
+        {
+          "row": "K",
+          "column": 11
+        }
+      ],
+      "console_command": "rajada A5 A5 K11",
+      "response": {
+        "validShots": 0,
+        "sunkBoats": [],
+        "repeatedShots": 2,
+        "outsideShots": 1,
+        "hitsOnBoats": [],
+        "missedShots": 0
+      }
+    },
+    {
+      "number": 3,
+      "shots": [
+        {
+          "row": "A",
+          "column": 1
+        },
+        {
+          "row": "A",
+          "column": 1
+        },
+        {
+          "row": "F",
+          "column": 3
+        }
+      ],
+      "console_command": "rajada A1 A1 F3",
+      "response": {
+        "validShots": 2,
+        "sunkBoats": [
+          {
+            "count": 1,
+            "type": "Barca"
+          }
+        ],
+        "repeatedShots": 1,
+        "outsideShots": 0,
+        "hitsOnBoats": [
+          {
+            "hits": 1,
+            "type": "Caravela"
+          }
+        ],
+        "missedShots": 0
+      }
+    },
+    {
+      "number": 4,
+      "shots": [
+        {
+          "row": "G",
+          "column": 3
+        },
+        {
+          "row": "C",
+          "column": 5
+        },
+        {
+          "row": "C",
+          "column": 6
+        }
+      ],
+      "console_command": "rajada G3 C5 C6",
+      "response": {
+        "validShots": 3,
+        "sunkBoats": [
+          {
+            "count": 1,
+            "type": "Caravela"
+          }
+        ],
+        "repeatedShots": 0,
+        "outsideShots": 0,
+        "hitsOnBoats": [
+          {
+            "hits": 2,
+            "type": "Nau"
+          }
+        ],
+        "missedShots": 0
+      }
+    },
+    {
+      "number": 5,
+      "shots": [
+        {
+          "row": "C",
+          "column": 7
+        },
+        {
+          "row": "H",
+          "column": 1
+        },
+        {
+          "row": "I",
+          "column": 1
+        }
+      ],
+      "console_command": "rajada C7 H1 I1",
+      "response": {
+        "validShots": 3,
+        "sunkBoats": [
+          {
+            "count": 1,
+            "type": "Caravela"
+          },
+          {
+            "count": 1,
+            "type": "Nau"
+          }
+        ],
+        "repeatedShots": 0,
+        "outsideShots": 0,
+        "hitsOnBoats": [],
+        "missedShots": 0
+      }
+    },
+    {
+      "number": 6,
+      "shots": [
+        {
+          "row": "D",
+          "column": 1
+        },
+        {
+          "row": "D",
+          "column": 2
+        },
+        {
+          "row": "D",
+          "column": 3
+        }
+      ],
+      "console_command": "rajada D1 D2 D3",
+      "response": {
+        "validShots": 3,
+        "sunkBoats": [
+          {
+            "count": 1,
+            "type": "Nau"
+          }
+        ],
+        "repeatedShots": 0,
+        "outsideShots": 0,
+        "hitsOnBoats": [],
+        "missedShots": 0
+      }
+    },
+    {
+      "number": 7,
+      "shots": [
+        {
+          "row": "G",
+          "column": 5
+        },
+        {
+          "row": "H",
+          "column": 5
+        },
+        {
+          "row": "I",
+          "column": 5
+        }
+      ],
+      "console_command": "rajada G5 H5 I5",
+      "response": {
+        "validShots": 3,
+        "sunkBoats": [],
+        "repeatedShots": 0,
+        "outsideShots": 0,
+        "hitsOnBoats": [
+          {
+            "hits": 3,
+            "type": "Fragata"
+          }
+        ],
+        "missedShots": 0
+      }
+    },
+    {
+      "number": 8,
+      "shots": [
+        {
+          "row": "J",
+          "column": 5
+        },
+        {
+          "row": "A",
+          "column": 6
+        },
+        {
+          "row": "A",
+          "column": 10
+        }
+      ],
+      "console_command": "rajada J5 A6 A10",
+      "response": {
+        "validShots": 3,
+        "sunkBoats": [
+          {
+            "count": 2,
+            "type": "Barca"
+          },
+          {
+            "count": 1,
+            "type": "Fragata"
+          }
+        ],
+        "repeatedShots": 0,
+        "outsideShots": 0,
+        "hitsOnBoats": [],
+        "missedShots": 0
+      }
+    },
+    {
+      "number": 9,
+      "shots": [
+        {
+          "row": "H",
+          "column": 7
+        },
+        {
+          "row": "H",
+          "column": 10
+        },
+        {
+          "row": "I",
+          "column": 10
+        }
+      ],
+      "console_command": "rajada H7 H10 I10",
+      "response": {
+        "validShots": 3,
+        "sunkBoats": [
+          {
+            "count": 1,
+            "type": "Caravela"
+          },
+          {
+            "count": 1,
+            "type": "Barca"
+          }
+        ],
+        "repeatedShots": 0,
+        "outsideShots": 0,
+        "hitsOnBoats": [],
+        "missedShots": 0
+      }
+    },
+    {
+      "number": 10,
+      "shots": [
+        {
+          "row": "C",
+          "column": 9
+        },
+        {
+          "row": "D",
+          "column": 9
+        },
+        {
+          "row": "E",
+          "column": 9
+        }
+      ],
+      "console_command": "rajada C9 D9 E9",
+      "response": {
+        "validShots": 3,
+        "sunkBoats": [],
+        "repeatedShots": 0,
+        "outsideShots": 0,
+        "hitsOnBoats": [
+          {
+            "hits": 3,
+            "type": "Galeao"
+          }
+        ],
+        "missedShots": 0
+      }
+    },
+    {
+      "number": 11,
+      "shots": [
+        {
+          "row": "E",
+          "column": 8
+        },
+        {
+          "row": "E",
+          "column": 10
+        },
+        {
+          "row": "B",
+          "column": 1
+        }
+      ],
+      "console_command": "rajada E8 E10 B1",
+      "response": {
+        "validShots": 3,
+        "sunkBoats": [
+          {
+            "count": 1,
+            "type": "Galeao"
+          }
+        ],
+        "repeatedShots": 0,
+        "outsideShots": 0,
+        "hitsOnBoats": [],
+        "missedShots": 1
+      }
+    }
+  ],
+  "totals": {
+    "HIT": 14,
+    "INVALID": 1,
+    "MISS": 4,
+    "REPEATED": 3,
+    "SUNK": 11
+  },
+  "sunkShips": {
+    "Barca": 4,
+    "Caravela": 3,
+    "Fragata": 1,
+    "Galeao": 1,
+    "Nau": 2
+  },
+  "validatedAgainstSQLite": true
+}

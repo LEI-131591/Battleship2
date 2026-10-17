@@ -1,0 +1,274 @@
+{
+  "date": "2026-10-17",
+  "commit": "17aa27b0f8fccdb87183de1c4f96997460328beb",
+  "gameId": "b034b9f2-1666-4314-90e5-d76ee8b88a30",
+  "method": "O assistente escolheu e introduziu as rajadas na consola real através de ferramentas. Os tiros de ensaio foram orientados para cobrir o protocolo; o mapa do programa estava visível. Não é um ensaio de estratégia oculta da parte D.",
+  "events": [
+    {
+      "command": "Arranque de battleship.Main",
+      "chunk_id": "89eb39",
+      "wall_time_seconds": 10.0112537,
+      "session_id": 18896,
+      "original_token_count": 255,
+      "output": "\u001b[?9001h\u001b[?1004h\u001b[?25l\u001b[2J\u001b[m\u001b[H***  Battleship  ***\r\n\u001b]0;C:\\Users\\caspe\\AppData\\Local\\OpenAI\\Codex\\bin\\e78bad9887fa50cf\\codex.exe\u0007\u001b[?25hBase de dados: C:\\Users\\caspe\\Documents\\Codex\\2026-10-14\\su\\work\\c-session\\data\\battleship.db\r\n======================= AJUDA DO MENU =========================\r\nDigite um dos comandos abaixo para interagir com o jogo:\r\n- gerafrota: Gera uma frota aleat�ria de navios.\r\n- lefrota: Permite criar e carregar uma frota personalizada.\r\n- estado: Mostra o status atual da frota.)\r\n- mapa: Exibe o mapa da frota.\r\n- rajada: Realiza uma rajada de disparos.\r\n- simula: Simula um jogo completo.\r\n- tiros: Lista os tiros v�lidos realizados (* = tiro em navio, o = tiro na �gua)\r\n- exportar: Exporta as rajadas da partida atual para CSV.\r\n- desisto: Encerra o jogo.\r\n- gui: Reabre o tabuleiro no modo gr�fico (mvn javafx:run).\r\n- jogos: Lista os jogos guardados.\r\n- historico ID_DO_JOGO: Mostra as jogadas desse jogo.\r\n===============================================================\r\n> "
+    },
+    {
+      "command": "gerafrota",
+      "chunk_id": "5f8183",
+      "wall_time_seconds": 1.0110131,
+      "session_id": 18896,
+      "original_token_count": 139,
+      "output": "gerafrota\r\n\u001b[?25lID do jogo: b034b9f2-1666-4314-90e5-d76ee8b88a30\u001b[22;1H    \u001b[?25h 1 2 3 4 5 6 7 8 9 10\r\n   +---------------------+\r\n A | # . . . . # . . . # |\r\n B | . . . . . . . . . . |\r\n C | . . . . # # # . # . |\r\n D | # # # . . . . . # . |\r\n E | . . . . . . . # # # |\r\n F | . . # . . . . . . . |\r\n G | . . # . # . . . . . |\r\n H | # . . . # . # . . # |\r\n I | # . . . # . . . . # |\r\n J | . . . . # . . . . . |\r\n   +---------------------+\r\n          LEGENDA\r\n'#'->navio, '-'->adjacente a navio, '.'->�gua\r\n'*'->Tiro certeiro, 'o'->Tiro na �gua\r\n\n>\u001b[1C"
+    },
+    {
+      "command": "rajada A5 C10 F5",
+      "shots": [
+        {
+          "row": "A",
+          "column": 5
+        },
+        {
+          "row": "C",
+          "column": 10
+        },
+        {
+          "row": "F",
+          "column": 5
+        }
+      ],
+      "chunk_id": "d02845",
+      "wall_time_seconds": 1.0090083,
+      "session_id": 18896,
+      "original_token_count": 195,
+      "output": "rajada A5 C10 F5\r\nJogada n�1 -> 3 tiros v�lidos: 3 tiros na �gua\r\n{\r\n  \"validShots\" : 3,\r\n  \"sunkBoats\" : [ ],\r\n  \"repeatedShots\" : 0,\r\n  \"outsideShots\" : 0,\r\n  \"hitsOnBoats\" : [ ],\r\n  \"missedShots\" : 3\r\n}\r\n\n[ {\r\n  \"row\" : \"A\",\r\n  \"column\" : 5\r\n}, {\r\n  \"row\" : \"C\",\r\n  \"column\" : 10\r\n}, {\r\n  \"row\" : \"F\",\r\n  \"column\" : 5\r\n} ]\r\n\nTempo da jogada 1: 29.461 s\r\nEstado da Frota: 11 a flutuar, 0 afundados!\r\n\n     1 2 3 4 5 6 7 8 9 10\r\n   +---------------------+\r\n A | # . . . o # . . . # |\r\n B | . . . . . . . . . . |\r\n C | . . . . # # # . # o |\r\n D | # # # . . . . . # . |\r\n E | . . . . . . . # # # |\r\n F | . . # . o . . . . . |\r\n G | . . # . # . . . . . |\r\n H | # . . . # . # . . # |\r\n I | # . . . # . . . . # |\r\n J | . . . . # . . . . . |\r\n   +---------------------+\r\n\n>\u001b[1C"
+    },
+    {
+      "command": "rajada A5 A5 K11",
+      "shots": [
+        {
+          "row": "A",
+          "column": 5
+        },
+        {
+          "row": "A",
+          "column": 5
+        },
+        {
+          "row": "K",
+          "column": 11
+        }
+      ],
+      "chunk_id": "74cccb",
+      "wall_time_seconds": 1.0019402,
+      "session_id": 18896,
+      "original_token_count": 194,
+      "output": "rajada A5 A5 K11\r\nJogada n�2 -> 2 tiros repetidos, 1 tiro exterior\r\n{\r\n  \"validShots\" : 0,\r\n  \"sunkBoats\" : [ ],\r\n  \"repeatedShots\" : 2,\r\n  \"outsideShots\" : 1,\r\n  \"hitsOnBoats\" : [ ],\r\n  \"missedShots\" : 0\r\n}\r\n\n[ {\r\n  \"row\" : \"A\",\r\n  \"column\" : 5\r\n}, {\r\n  \"row\" : \"A\",\r\n  \"column\" : 5\r\n}, {\r\n  \"row\" : \"K\",\r\n  \"column\" : 11\r\n} ]\r\n\nTempo da jogada 2: 3.999 s\r\nEstado da Frota: 11 a flutuar, 0 afundados!\r\n\n     1 2 3 4 5 6 7 8 9 10\r\n   +---------------------+\r\n A | # . . . o # . . . # |\r\n B | . . . . . . . . . . |\r\n C | . . . . # # # . # o |\r\n D | # # # . . . . . # . |\r\n E | . . . . . . . # # # |\r\n F | . . # . o . . . . . |\r\n G | . . # . # . . . . . |\r\n H | # . . . # . # . . # |\r\n I | # . . . # . . . . # |\r\n J | . . . . # . . . . . |\r\n   +---------------------+\r\n\n>\u001b[1C"
+    },
+    {
+      "command": "rajada A1 A1 F3",
+      "shots": [
+        {
+          "row": "A",
+          "column": 1
+        },
+        {
+          "row": "A",
+          "column": 1
+        },
+        {
+          "row": "F",
+          "column": 3
+        }
+      ],
+      "chunk_id": "4b9e94",
+      "wall_time_seconds": 1.0020413,
+      "session_id": 18896,
+      "original_token_count": 232,
+      "output": "rajada A1 A1 F3\r\nJogada n�3 -> 2 tiros v�lidos: 1 Barca ao fundo + 1 tiro num(a) Caravela , 1 tir\r\n\u001b[23;80Hro repetido\r\n{\r\n  \"validShots\" : 2,\r\n  \"sunkBoats\" : [ {\r\n    \"count\" : 1,\r\n    \"type\" : \"Barca\"\r\n  } ],\r\n  \"repeatedShots\" : 1,\r\n  \"outsideShots\" : 0,\r\n  \"hitsOnBoats\" : [ {\r\n    \"hits\" : 1,\r\n    \"type\" : \"Caravela\"\r\n  } ],\r\n  \"missedShots\" : 0\r\n}\r\n\n[ {\r\n  \"row\" : \"A\",\r\n  \"column\" : 1\r\n}, {\r\n  \"row\" : \"A\",\r\n  \"column\" : 1\r\n}, {\r\n  \"row\" : \"F\",\r\n  \"column\" : 3\r\n} ]\r\n\nTempo da jogada 3: 14.063 s\r\nEstado da Frota: 10 a flutuar, 1 afundados!\r\n\n     1 2 3 4 5 6 7 8 9 10\r\n   +---------------------+\r\n A | * - . . o # . . . # |\r\n B | - - . . . . . . . . |\r\n C | . . . . # # # . # o |\r\n D | # # # . . . . . # . |\r\n E | . . . . . . . # # # |\r\n F | . . * . o . . . . . |\r\n G | . . # . # . . . . . |\r\n H | # . . . # . # . . # |\r\n I | # . . . # . . . . # |\r\n J | . . . . # . . . . . |\r\n   +---------------------+\r\n\n>\u001b[1C"
+    },
+    {
+      "command": "rajada G3 C5 C6",
+      "shots": [
+        {
+          "row": "G",
+          "column": 3
+        },
+        {
+          "row": "C",
+          "column": 5
+        },
+        {
+          "row": "C",
+          "column": 6
+        }
+      ],
+      "chunk_id": "a5d67a",
+      "wall_time_seconds": 1.002741,
+      "session_id": 18896,
+      "original_token_count": 223,
+      "output": "rajada G3 C5 C6\r\nJogada n�4 -> 3 tiros v�lidos: 1 Caravela ao fundo + 2 tiros num(a) Nau \r\n{\r\n  \"validShots\" : 3,\r\n  \"sunkBoats\" : [ {\r\n    \"count\" : 1,\r\n    \"type\" : \"Caravela\"\r\n  } ],\r\n  \"repeatedShots\" : 0,\r\n  \"outsideShots\" : 0,\r\n  \"hitsOnBoats\" : [ {\r\n    \"hits\" : 2,\r\n    \"type\" : \"Nau\"\r\n  } ],\r\n  \"missedShots\" : 0\r\n}\r\n\n[ {\r\n  \"row\" : \"G\",\r\n  \"column\" : 3\r\n}, {\r\n  \"row\" : \"C\",\r\n  \"column\" : 5\r\n}, {\r\n  \"row\" : \"C\",\r\n  \"column\" : 6\r\n} ]\r\n\nTempo da jogada 4: 4.261 s\r\nEstado da Frota: 9 a flutuar, 2 afundados!\r\n\n     1 2 3 4 5 6 7 8 9 10\r\n   +---------------------+\r\n A | * - . . o # . . . # |\r\n B | - - . . . . . . . . |\r\n C | . . . . * * # . # o |\r\n D | # # # . . . . . # . |\r\n E | . - - - . . . # # # |\r\n F | . - * - o . . . . . |\r\n G | . - * - # . . . . . |\r\n H | # - - - # . # . . # |\r\n I | # . . . # . . . . # |\r\n J | . . . . # . . . . . |\r\n   +---------------------+\r\n\n>\u001b[1C"
+    },
+    {
+      "command": "rajada C7 H1 I1",
+      "shots": [
+        {
+          "row": "C",
+          "column": 7
+        },
+        {
+          "row": "H",
+          "column": 1
+        },
+        {
+          "row": "I",
+          "column": 1
+        }
+      ],
+      "chunk_id": "50a6ed",
+      "wall_time_seconds": 1.0108437,
+      "session_id": 18896,
+      "original_token_count": 223,
+      "output": "rajada C7 H1 I1\r\nJogada n�5 -> 3 tiros v�lidos: 1 Caravela ao fundo + 1 Nau ao fundo \r\n{\r\n  \"validShots\" : 3,\r\n  \"sunkBoats\" : [ {\r\n    \"count\" : 1,\r\n    \"type\" : \"Caravela\"\r\n  }, {\r\n    \"count\" : 1,\r\n    \"type\" : \"Nau\"\r\n  } ],\r\n  \"repeatedShots\" : 0,\r\n  \"outsideShots\" : 0,\r\n  \"hitsOnBoats\" : [ ],\r\n  \"missedShots\" : 0\r\n}\r\n\n[ {\r\n  \"row\" : \"C\",\r\n  \"column\" : 7\r\n}, {\r\n  \"row\" : \"H\",\r\n  \"column\" : 1\r\n}, {\r\n  \"row\" : \"I\",\r\n  \"column\" : 1\r\n} ]\r\n\nTempo da jogada 5: 4.109 s\r\nEstado da Frota: 7 a flutuar, 4 afundados!\r\n\n     1 2 3 4 5 6 7 8 9 10\r\n   +---------------------+\r\n A | * - . . o # . . . # |\r\n B | - - . - - - - - . . |\r\n C | . . . - * * * - # o |\r\n D | # # # - - - - - # . |\r\n E | . - - - . . . # # # |\r\n F | . - * - o . . . . . |\r\n G | - - * - # . . . . . |\r\n H | * - - - # . # . . # |\r\n I | * - . . # . . . . # |\r\n J | - - . . # . . . . . |\r\n   +---------------------+\r\n\n>\u001b[1C"
+    },
+    {
+      "command": "rajada D1 D2 D3",
+      "shots": [
+        {
+          "row": "D",
+          "column": 1
+        },
+        {
+          "row": "D",
+          "column": 2
+        },
+        {
+          "row": "D",
+          "column": 3
+        }
+      ],
+      "chunk_id": "521f02",
+      "wall_time_seconds": 1.0093972,
+      "session_id": 18896,
+      "original_token_count": 205,
+      "output": "rajada D1 D2 D3\r\nJogada n�6 -> 3 tiros v�lidos: 1 Nau ao fundo \r\n{\r\n  \"validShots\" : 3,\r\n  \"sunkBoats\" : [ {\r\n    \"count\" : 1,\r\n    \"type\" : \"Nau\"\r\n  } ],\r\n  \"repeatedShots\" : 0,\r\n  \"outsideShots\" : 0,\r\n  \"hitsOnBoats\" : [ ],\r\n  \"missedShots\" : 0\r\n}\r\n\n[ {\r\n  \"row\" : \"D\",\r\n  \"column\" : 1\r\n}, {\r\n  \"row\" : \"D\",\r\n  \"column\" : 2\r\n}, {\r\n  \"row\" : \"D\",\r\n  \"column\" : 3\r\n} ]\r\n\nTempo da jogada 6: 5.502 s\r\nEstado da Frota: 6 a flutuar, 5 afundados!\r\n\n     1 2 3 4 5 6 7 8 9 10\r\n   +---------------------+\r\n A | * - . . o # . . . # |\r\n B | - - . - - - - - . . |\r\n C | - - - - * * * - # o |\r\n D | * * * - - - - - # . |\r\n E | - - - - . . . # # # |\r\n F | . - * - o . . . . . |\r\n G | - - * - # . . . . . |\r\n H | * - - - # . # . . # |\r\n I | * - . . # . . . . # |\r\n J | - - . . # . . . . . |\r\n   +---------------------+\r\n\n>\u001b[1C"
+    },
+    {
+      "command": "rajada G5 H5 I5",
+      "shots": [
+        {
+          "row": "G",
+          "column": 5
+        },
+        {
+          "row": "H",
+          "column": 5
+        },
+        {
+          "row": "I",
+          "column": 5
+        }
+      ],
+      "chunk_id": "322ce6",
+      "wall_time_seconds": 1.0130923,
+      "session_id": 18896,
+      "original_token_count": 208,
+      "output": "rajada G5 H5 I5\r\nJogada n�7 -> 3 tiros v�lidos: 3 tiros num(a) Fragata \r\n{\r\n  \"validShots\" : 3,\r\n  \"sunkBoats\" : [ ],\r\n  \"repeatedShots\" : 0,\r\n  \"outsideShots\" : 0,\r\n  \"hitsOnBoats\" : [ {\r\n    \"hits\" : 3,\r\n    \"type\" : \"Fragata\"\r\n  } ],\r\n  \"missedShots\" : 0\r\n}\r\n\n[ {\r\n  \"row\" : \"G\",\r\n  \"column\" : 5\r\n}, {\r\n  \"row\" : \"H\",\r\n  \"column\" : 5\r\n}, {\r\n  \"row\" : \"I\",\r\n  \"column\" : 5\r\n} ]\r\n\nTempo da jogada 7: 12.916 s\r\nEstado da Frota: 6 a flutuar, 5 afundados!\r\n\n     1 2 3 4 5 6 7 8 9 10\r\n   +---------------------+\r\n A | * - . . o # . . . # |\r\n B | - - . - - - - - . . |\r\n C | - - - - * * * - # o |\r\n D | * * * - - - - - # . |\r\n E | - - - - . . . # # # |\r\n F | . - * - o . . . . . |\r\n G | - - * - * . . . . . |\r\n H | * - - - * . # . . # |\r\n I | * - . . * . . . . # |\r\n J | - - . . # . . . . . |\r\n   +---------------------+\r\n\n>\u001b[1C"
+    },
+    {
+      "command": "rajada J5 A6 A10",
+      "shots": [
+        {
+          "row": "J",
+          "column": 5
+        },
+        {
+          "row": "A",
+          "column": 6
+        },
+        {
+          "row": "A",
+          "column": 10
+        }
+      ],
+      "chunk_id": "849c0a",
+      "wall_time_seconds": 1.0030167,
+      "session_id": 18896,
+      "original_token_count": 224,
+      "output": "rajada J5 A6 A10\r\nJogada n�8 -> 3 tiros v�lidos: 2 Barcas ao fundo + 1 Fragata ao fundo \r\n{\r\n  \"validShots\" : 3,\r\n  \"sunkBoats\" : [ {\r\n    \"count\" : 2,\r\n    \"type\" : \"Barca\"\r\n  }, {\r\n    \"count\" : 1,\r\n    \"type\" : \"Fragata\"\r\n  } ],\r\n  \"repeatedShots\" : 0,\r\n  \"outsideShots\" : 0,\r\n  \"hitsOnBoats\" : [ ],\r\n  \"missedShots\" : 0\r\n}\r\n\n[ {\r\n  \"row\" : \"J\",\r\n  \"column\" : 5\r\n}, {\r\n  \"row\" : \"A\",\r\n  \"column\" : 6\r\n}, {\r\n  \"row\" : \"A\",\r\n  \"column\" : 10\r\n} ]\r\n\nTempo da jogada 8: 4.553 s\r\nEstado da Frota: 3 a flutuar, 8 afundados!\r\n\n\u001b[4C 1 2 3 4 5 6 7 8 9 10\r\n   +---------------------+\r\n A | * - . . o * - . - * |\r\n B | - - . - - - - - - - |\r\n C | - - - - * * * - # o |\r\n D | * * * - - - - - # . |\r\n E | - - - - . . . # # # |\r\n F | . - * - o - . . . . |\r\n G | - - * - * - . . . . |\r\n H | * - - - * - # . . # |\r\n I | * - . - * - . . . # |\r\n J | - - . - * - . . . . |\r\n   +---------------------+\r\n\n>\u001b[1C"
+    },
+    {
+      "command": "rajada H7 H10 I10",
+      "shots": [
+        {
+          "row": "H",
+          "column": 7
+        },
+        {
+          "row": "H",
+          "column": 10
+        },
+        {
+          "row": "I",
+          "column": 10
+        }
+      ],
+      "chunk_id": "192055",
+      "wall_time_seconds": 1.009286,
+      "session_id": 18896,
+      "original_token_count": 225,
+      "output": "rajada H7 H10 I10\r\nJogada n�9 -> 3 tiros v�lidos: 1 Caravela ao fundo + 1 Barca ao fundo \r\n{\r\n  \"validShots\" : 3,\r\n  \"sunkBoats\" : [ {\r\n    \"count\" : 1,\r\n    \"type\" : \"Caravela\"\r\n  }, {\r\n    \"count\" : 1,\r\n    \"type\" : \"Barca\"\r\n  } ],\r\n  \"repeatedShots\" : 0,\r\n  \"outsideShots\" : 0,\r\n  \"hitsOnBoats\" : [ ],\r\n  \"missedShots\" : 0\r\n}\r\n\n[ {\r\n  \"row\" : \"H\",\r\n  \"column\" : 7\r\n}, {\r\n  \"row\" : \"H\",\r\n  \"column\" : 10\r\n}, {\r\n  \"row\" : \"I\",\r\n  \"column\" : 10\r\n} ]\r\n\nTempo da jogada 9: 4.072 s\r\nEstado da Frota: 1 a flutuar, 10 afundados!\r\n\n     1 2 3 4 5 6 7 8 9 10\r\n   +---------------------+\r\n A | * - . . o * - . - * |\r\n B | - - . - - - - - - - |\r\n C | - - - - * * * - # o |\r\n D | * * * - - - - - # . |\r\n E | - - - - . . . # # # |\r\n F | . - * - o - . . . . |\r\n G | - - * - * - - - - - |\r\n H | * - - - * - * - - * |\r\n I | * - . - * - - - - * |\r\n J | - - . - * - . . - - |\r\n   +---------------------+\r\n\n>\u001b[1C"
+    },
+    {
+      "command": "rajada C9 D9 E9",
+      "shots": [
+        {
+          "row": "C",
+          "column": 9
+        },
+        {
+          "row": "D",
+          "column": 9
+        },
+        {
+          "row": "E",
+          "column": 9
+        }
+      ],
+      "chunk_id": "6dcfcc",
+      "wall_time_seconds": 1.0012268,
+      "session_id": 18896,
+      "original_token_count": 208,
+      "output": "rajada C9 D9 E9\r\nJogada n�10 -> 3 tiros v�lidos: 3 tiros num(a) Galeao \r\n{\r\n  \"validShots\" : 3,\r\n  \"sunkBoats\" : [ ],\r\n  \"repeatedShots\" : 0,\r\n  \"outsideShots\" : 0,\r\n  \"hitsOnBoats\" : [ {\r\n    \"hits\" : 3,\r\n    \"type\" : \"Galeao\"\r\n  } ],\r\n  \"missedShots\" : 0\r\n}\r\n\n[ {\r\n  \"row\" : \"C\",\r\n  \"column\" : 9\r\n}, {\r\n  \"row\" : \"D\",\r\n  \"column\" : 9\r\n}, {\r\n  \"row\" : \"E\",\r\n  \"column\" : 9\r\n} ]\r\n\nTempo da jogada 10: 6.638 s\r\nEstado da Frota: 1 a flutuar, 10 afundados!\r\n\n     1 2 3 4 5 6 7 8 9 10\r\n   +---------------------+\r\n A | * - . . o * - . - * |\r\n B | - - . - - - - - - - |\r\n C | - - - - * * * - * o |\r\n D | * * * - - - - - * . |\r\n E | - - - - . . . # * # |\r\n F | . - * - o - . . . . |\r\n G | - - * - * - - - - - |\r\n H | * - - - * - * - - * |\r\n I | * - . - * - - - - * |\r\n J | - - . - * - . . - - |\r\n   +---------------------+\r\n\n>\u001b[1C"
+    },
+    {
+      "command": "rajada E8 E10 B1",
+      "shots": [
+        {
+          "row": "E",
+          "column": 8
+        },
+        {
+          "row": "E",
+          "column": 10
+        },
+        {
+          "row": "B",
+          "column": 1
+        }
+      ],
+      "chunk_id": "573df4",
+      "wall_time_seconds": 1.0113901,
+      "session_id": 18896,
+      "original_token_count": 275,
+      "output": "rajada E8 E10 B1\r\nJogada n�11 -> 3 tiros v�lidos: 1 Galeao ao fundo + 1 tiro na �gua\r\n{\r\n  \"validShots\" : 3,\r\n  \"sunkBoats\" : [ {\r\n    \"count\" : 1,\r\n    \"type\" : \"Galeao\"\r\n  } ],\r\n  \"repeatedShots\" : 0,\r\n  \"outsideShots\" : 0,\r\n  \"hitsOnBoats\" : [ ],\r\n  \"missedShots\" : 1\r\n}\r\n\n[ {\r\n  \"row\" : \"E\",\r\n  \"column\" : 8\r\n}, {\r\n  \"row\" : \"E\",\r\n  \"column\" : 10\r\n}, {\r\n  \"row\" : \"B\",\r\n  \"column\" : 1\r\n} ]\r\n\nTempo da jogada 11: 5.502 s\r\nEstado da Frota: 0 a flutuar, 11 afundados!\r\n\n     1 2 3 4 5 6 7 8 9 10\r\n   +---------------------+\r\n A | * - . . o * - . - * |\r\n B | o - . - - - - - - - |\r\n C | - - - - * * * - * o |\r\n D | * * * - - - - - * - |\r\n E | - - - - . . - * * * |\r\n F | . - * - o - - - - - |\r\n G | - - * - * - - - - - |\r\n H | * - - - * - * - - * |\r\n I | * - . - * - - - - * |\r\n J | - - . - * - . . - - |\r\n   +---------------------+\r\n\n\n+--------------------------------------------------------------+\r\n| Maldito sejas, Java Sparrow, eu voltarei, glub glub glub ... |\r\n+--------------------------------------------------------------+\r\nUsa 'exportar' para guardar as rajadas desta partida.\r\n>\u001b[1C"
+    },
+    {
+      "command": "estado; desisto",
+      "chunk_id": "738619",
+      "wall_time_seconds": 0.0303589,
+      "exit_code": 0,
+      "original_token_count": 24,
+      "output": "estado\r\ndesisto\r\nEstado da Frota: 0 a flutuar, 11 afundados!\r\n> Bons ventos!\r\n\u001b[?9001l\u001b[?1004l"
+    }
+  ]
+}

@@ -1,3 +1,5 @@
+Vídeo demonstração (Funcionalidades + LLM): https://www.youtube.com/watch?v=zJ3u7lcLwo8
+
 # ⚓ Battleship 2.0
 
 ![Build Status](https://img.shields.io/badge/build-passing-brightgreen)

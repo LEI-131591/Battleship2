@@ -1,0 +1,928 @@
+{
+  "date": "2026-10-17",
+  "commit": "17aa27b0f8fccdb87183de1c4f96997460328beb",
+  "method": "O assistente escolheu cada rajada após interpretar a resposta anterior. Um adaptador Java invocou o Game real e ocultou o mapa; a frota só foi revelada no fim. Ferramentas auxiliaram o diário e a enumeração de posições compatíveis, sem escolher automaticamente as rajadas.",
+  "rounds": [
+    {
+      "number": 1,
+      "promptVersion": 1,
+      "reason": "Exploração inicial de três regiões afastadas, sem acesso ao mapa.",
+      "shots": [
+        {
+          "row": "B",
+          "column": 2
+        },
+        {
+          "row": "E",
+          "column": 5
+        },
+        {
+          "row": "H",
+          "column": 8
+        }
+      ],
+      "response": {
+        "validShots": 3,
+        "sunkBoats": [],
+        "repeatedShots": 0,
+        "outsideShots": 0,
+        "hitsOnBoats": [
+          {
+            "hits": 2,
+            "type": "Caravela"
+          },
+          {
+            "hits": 1,
+            "type": "Nau"
+          }
+        ],
+        "missedShots": 0
+      },
+      "remainingShips": 11,
+      "postGameAuditOnly": [
+        {
+          "position": "B2",
+          "outcome": "HIT"
+        },
+        {
+          "position": "E5",
+          "outcome": "HIT"
+        },
+        {
+          "position": "H8",
+          "outcome": "HIT"
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "promptVersion": 2,
+      "reason": "Os três alvos anteriores são acertos certos, mas o tipo por coordenada é ambíguo. Investigar vizinhos de B2 sem atribuir o tipo à posição.",
+      "shots": [
+        {
+          "row": "B",
+          "column": 1
+        },
+        {
+          "row": "B",
+          "column": 3
+        },
+        {
+          "row": "A",
+          "column": 2
+        }
+      ],
+      "response": {
+        "validShots": 3,
+        "sunkBoats": [],
+        "repeatedShots": 0,
+        "outsideShots": 0,
+        "hitsOnBoats": [],
+        "missedShots": 3
+      },
+      "remainingShips": 11,
+      "postGameAuditOnly": [
+        {
+          "position": "B1",
+          "outcome": "MISS"
+        },
+        {
+          "position": "B3",
+          "outcome": "MISS"
+        },
+        {
+          "position": "A2",
+          "outcome": "MISS"
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "promptVersion": 2,
+      "reason": "A2, B1 e B3 são água; B2 exige continuação por C2. D2 testa a hipótese de Nau vertical. D5 investiga o acerto E5.",
+      "shots": [
+        {
+          "row": "C",
+          "column": 2
+        },
+        {
+          "row": "D",
+          "column": 2
+        },
+        {
+          "row": "D",
+          "column": 5
+        }
+      ],
+      "response": {
+        "validShots": 3,
+        "sunkBoats": [
+          {
+            "count": 1,
+            "type": "Nau"
+          }
+        ],
+        "repeatedShots": 0,
+        "outsideShots": 0,
+        "hitsOnBoats": [],
+        "missedShots": 1
+      },
+      "remainingShips": 10,
+      "postGameAuditOnly": [
+        {
+          "position": "C2",
+          "outcome": "HIT"
+        },
+        {
+          "position": "D2",
+          "outcome": "SUNK"
+        },
+        {
+          "position": "D5",
+          "outcome": "MISS"
+        }
+      ]
+    },
+    {
+      "number": 4,
+      "promptVersion": 2,
+      "reason": "Nau B2-C2-D2 confirmada e afundada; D5 é água. E5 é uma Caravela: testar os três vizinhos restantes para a terminar.",
+      "shots": [
+        {
+          "row": "E",
+          "column": 4
+        },
+        {
+          "row": "E",
+          "column": 6
+        },
+        {
+          "row": "F",
+          "column": 5
+        }
+      ],
+      "response": {
+        "validShots": 3,
+        "sunkBoats": [
+          {
+            "count": 1,
+            "type": "Caravela"
+          }
+        ],
+        "repeatedShots": 0,
+        "outsideShots": 0,
+        "hitsOnBoats": [],
+        "missedShots": 2
+      },
+      "remainingShips": 9,
+      "postGameAuditOnly": [
+        {
+          "position": "E4",
+          "outcome": "SUNK"
+        },
+        {
+          "position": "E6",
+          "outcome": "MISS"
+        },
+        {
+          "position": "F5",
+          "outcome": "MISS"
+        }
+      ]
+    },
+    {
+      "number": 5,
+      "promptVersion": 2,
+      "reason": "Caravela de E5 afundada, cauda ainda ambígua. Investigar três vizinhos ortogonais da outra Caravela, em H8.",
+      "shots": [
+        {
+          "row": "G",
+          "column": 8
+        },
+        {
+          "row": "H",
+          "column": 7
+        },
+        {
+          "row": "H",
+          "column": 9
+        }
+      ],
+      "response": {
+        "validShots": 3,
+        "sunkBoats": [],
+        "repeatedShots": 0,
+        "outsideShots": 0,
+        "hitsOnBoats": [],
+        "missedShots": 3
+      },
+      "remainingShips": 9,
+      "postGameAuditOnly": [
+        {
+          "position": "G8",
+          "outcome": "MISS"
+        },
+        {
+          "position": "H7",
+          "outcome": "MISS"
+        },
+        {
+          "position": "H9",
+          "outcome": "MISS"
+        }
+      ]
+    },
+    {
+      "number": 6,
+      "promptVersion": 2,
+      "reason": "G8, H7 e H9 são água: a Caravela H8 deve continuar em I8. Usar os outros tiros para explorar B6 e H3.",
+      "shots": [
+        {
+          "row": "I",
+          "column": 8
+        },
+        {
+          "row": "B",
+          "column": 6
+        },
+        {
+          "row": "H",
+          "column": 3
+        }
+      ],
+      "response": {
+        "validShots": 3,
+        "sunkBoats": [
+          {
+            "count": 1,
+            "type": "Caravela"
+          }
+        ],
+        "repeatedShots": 0,
+        "outsideShots": 0,
+        "hitsOnBoats": [],
+        "missedShots": 2
+      },
+      "remainingShips": 8,
+      "postGameAuditOnly": [
+        {
+          "position": "I8",
+          "outcome": "SUNK"
+        },
+        {
+          "position": "B6",
+          "outcome": "MISS"
+        },
+        {
+          "position": "H3",
+          "outcome": "MISS"
+        }
+      ]
+    },
+    {
+      "number": 7,
+      "promptVersion": 2,
+      "reason": "Caravela H8-I8 concluída. B6 e H3 são água. Retomar exploração fora dos halos confirmados, em B9, F9 e I3.",
+      "shots": [
+        {
+          "row": "B",
+          "column": 9
+        },
+        {
+          "row": "F",
+          "column": 9
+        },
+        {
+          "row": "I",
+          "column": 3
+        }
+      ],
+      "response": {
+        "validShots": 3,
+        "sunkBoats": [
+          {
+            "count": 1,
+            "type": "Barca"
+          }
+        ],
+        "repeatedShots": 0,
+        "outsideShots": 0,
+        "hitsOnBoats": [],
+        "missedShots": 2
+      },
+      "remainingShips": 7,
+      "postGameAuditOnly": [
+        {
+          "position": "B9",
+          "outcome": "SUNK"
+        },
+        {
+          "position": "F9",
+          "outcome": "MISS"
+        },
+        {
+          "position": "I3",
+          "outcome": "MISS"
+        }
+      ]
+    },
+    {
+      "number": 8,
+      "promptVersion": 2,
+      "reason": "Uma Barca foi afundada em B9/F9/I3, sem identificação individual: não excluir halos de qualquer uma dessas hipóteses. Explorar um grupo contíguo C5-C7 para reduzir nova ambiguidade.",
+      "shots": [
+        {
+          "row": "C",
+          "column": 5
+        },
+        {
+          "row": "C",
+          "column": 6
+        },
+        {
+          "row": "C",
+          "column": 7
+        }
+      ],
+      "response": {
+        "validShots": 3,
+        "sunkBoats": [
+          {
+            "count": 1,
+            "type": "Caravela"
+          }
+        ],
+        "repeatedShots": 0,
+        "outsideShots": 0,
+        "hitsOnBoats": [],
+        "missedShots": 1
+      },
+      "remainingShips": 6,
+      "postGameAuditOnly": [
+        {
+          "position": "C5",
+          "outcome": "HIT"
+        },
+        {
+          "position": "C6",
+          "outcome": "SUNK"
+        },
+        {
+          "position": "C7",
+          "outcome": "MISS"
+        }
+      ]
+    },
+    {
+      "number": 9,
+      "promptVersion": 2,
+      "reason": "Terceira Caravela afundada em C5-C6 ou C6-C7; apenas o halo comum às duas hipóteses é seguro. Explorar G1-G3, fora das exclusões confirmadas.",
+      "shots": [
+        {
+          "row": "G",
+          "column": 1
+        },
+        {
+          "row": "G",
+          "column": 2
+        },
+        {
+          "row": "G",
+          "column": 3
+        }
+      ],
+      "response": {
+        "validShots": 3,
+        "sunkBoats": [],
+        "repeatedShots": 0,
+        "outsideShots": 0,
+        "hitsOnBoats": [],
+        "missedShots": 3
+      },
+      "remainingShips": 6,
+      "postGameAuditOnly": [
+        {
+          "position": "G1",
+          "outcome": "MISS"
+        },
+        {
+          "position": "G2",
+          "outcome": "MISS"
+        },
+        {
+          "position": "G3",
+          "outcome": "MISS"
+        }
+      ]
+    },
+    {
+      "number": 10,
+      "promptVersion": 2,
+      "reason": "G1-G3 são água. Explorar grupo contíguo E8-E10 na zona direita, preservando as hipóteses ainda ambíguas da Barca.",
+      "shots": [
+        {
+          "row": "E",
+          "column": 8
+        },
+        {
+          "row": "E",
+          "column": 9
+        },
+        {
+          "row": "E",
+          "column": 10
+        }
+      ],
+      "response": {
+        "validShots": 3,
+        "sunkBoats": [],
+        "repeatedShots": 0,
+        "outsideShots": 0,
+        "hitsOnBoats": [
+          {
+            "hits": 3,
+            "type": "Fragata"
+          }
+        ],
+        "missedShots": 0
+      },
+      "remainingShips": 6,
+      "postGameAuditOnly": [
+        {
+          "position": "E8",
+          "outcome": "HIT"
+        },
+        {
+          "position": "E9",
+          "outcome": "HIT"
+        },
+        {
+          "position": "E10",
+          "outcome": "HIT"
+        }
+      ]
+    },
+    {
+      "number": 11,
+      "promptVersion": 2,
+      "reason": "Três acertos em Fragata em E8-E10 e limite direito do tabuleiro implicam E7 como quarta posição. Explorar ainda I5-J5.",
+      "shots": [
+        {
+          "row": "E",
+          "column": 7
+        },
+        {
+          "row": "I",
+          "column": 5
+        },
+        {
+          "row": "J",
+          "column": 5
+        }
+      ],
+      "response": {
+        "validShots": 3,
+        "sunkBoats": [
+          {
+            "count": 1,
+            "type": "Fragata"
+          }
+        ],
+        "repeatedShots": 0,
+        "outsideShots": 0,
+        "hitsOnBoats": [],
+        "missedShots": 2
+      },
+      "remainingShips": 5,
+      "postGameAuditOnly": [
+        {
+          "position": "E7",
+          "outcome": "SUNK"
+        },
+        {
+          "position": "I5",
+          "outcome": "MISS"
+        },
+        {
+          "position": "J5",
+          "outcome": "MISS"
+        }
+      ]
+    },
+    {
+      "number": 12,
+      "promptVersion": 2,
+      "reason": "Usar o diário e as posições ainda compatíveis dos navios grandes. A8, H4 e H6 cobrem o maior número dessas hipóteses; nenhum é tiro repetido ou halo confirmado.",
+      "shots": [
+        {
+          "row": "A",
+          "column": 8
+        },
+        {
+          "row": "H",
+          "column": 4
+        },
+        {
+          "row": "H",
+          "column": 6
+        }
+      ],
+      "response": {
+        "validShots": 3,
+        "sunkBoats": [],
+        "repeatedShots": 0,
+        "outsideShots": 0,
+        "hitsOnBoats": [
+          {
+            "hits": 2,
+            "type": "Galeao"
+          }
+        ],
+        "missedShots": 1
+      },
+      "remainingShips": 5,
+      "postGameAuditOnly": [
+        {
+          "position": "A8",
+          "outcome": "MISS"
+        },
+        {
+          "position": "H4",
+          "outcome": "HIT"
+        },
+        {
+          "position": "H6",
+          "outcome": "HIT"
+        }
+      ]
+    },
+    {
+      "number": 13,
+      "promptVersion": 2,
+      "reason": "Os dois acertos no Galeão têm de ser H4 e H6, pois A8 é demasiado distante. F5 e J5 já excluem as formas Norte/Sul; H5 é comum às hipóteses Este/Oeste. Testar H5 e as duas extremidades G4-I4 da hipótese Oeste.",
+      "shots": [
+        {
+          "row": "H",
+          "column": 5
+        },
+        {
+          "row": "G",
+          "column": 4
+        },
+        {
+          "row": "I",
+          "column": 4
+        }
+      ],
+      "response": {
+        "validShots": 3,
+        "sunkBoats": [
+          {
+            "count": 1,
+            "type": "Galeao"
+          }
+        ],
+        "repeatedShots": 0,
+        "outsideShots": 0,
+        "hitsOnBoats": [],
+        "missedShots": 0
+      },
+      "remainingShips": 4,
+      "postGameAuditOnly": [
+        {
+          "position": "H5",
+          "outcome": "HIT"
+        },
+        {
+          "position": "G4",
+          "outcome": "HIT"
+        },
+        {
+          "position": "I4",
+          "outcome": "SUNK"
+        }
+      ]
+    },
+    {
+      "number": 14,
+      "promptVersion": 2,
+      "reason": "Galeão G4/H4/H5/H6/I4 confirmado. O seu halo exclui I3 e a Fragata excluiu F9, logo a Barca da rajada 7 era B9. Explorar A5, H10 e H1, cobrindo várias das sete posições ainda possíveis para a Nau restante.",
+      "shots": [
+        {
+          "row": "A",
+          "column": 5
+        },
+        {
+          "row": "H",
+          "column": 10
+        },
+        {
+          "row": "H",
+          "column": 1
+        }
+      ],
+      "response": {
+        "validShots": 3,
+        "sunkBoats": [],
+        "repeatedShots": 0,
+        "outsideShots": 0,
+        "hitsOnBoats": [
+          {
+            "hits": 1,
+            "type": "Nau"
+          }
+        ],
+        "missedShots": 2
+      },
+      "remainingShips": 4,
+      "postGameAuditOnly": [
+        {
+          "position": "A5",
+          "outcome": "MISS"
+        },
+        {
+          "position": "H10",
+          "outcome": "MISS"
+        },
+        {
+          "position": "H1",
+          "outcome": "HIT"
+        }
+      ]
+    },
+    {
+      "number": 15,
+      "promptVersion": 2,
+      "reason": "Há uma Nau em uma de três regiões afastadas. Concentrar a rajada em A4/A6/A7 resolve a hipótese de A5 em vez de repetir três sondagens ambíguas.",
+      "shots": [
+        {
+          "row": "A",
+          "column": 4
+        },
+        {
+          "row": "A",
+          "column": 6
+        },
+        {
+          "row": "A",
+          "column": 7
+        }
+      ],
+      "response": {
+        "validShots": 3,
+        "sunkBoats": [
+          {
+            "count": 1,
+            "type": "Barca"
+          }
+        ],
+        "repeatedShots": 0,
+        "outsideShots": 0,
+        "hitsOnBoats": [],
+        "missedShots": 2
+      },
+      "remainingShips": 3,
+      "postGameAuditOnly": [
+        {
+          "position": "A4",
+          "outcome": "MISS"
+        },
+        {
+          "position": "A6",
+          "outcome": "MISS"
+        },
+        {
+          "position": "A7",
+          "outcome": "SUNK"
+        }
+      ]
+    },
+    {
+      "number": 16,
+      "promptVersion": 2,
+      "reason": "A região de A5 não contém a Nau; houve apenas uma Barca em A4/A6/A7, ainda sem posição individual certa. A Nau restante está em H10 ou H1. Testar as continuações G10/I10/J10 da hipótese direita.",
+      "shots": [
+        {
+          "row": "G",
+          "column": 10
+        },
+        {
+          "row": "I",
+          "column": 10
+        },
+        {
+          "row": "J",
+          "column": 10
+        }
+      ],
+      "response": {
+        "validShots": 3,
+        "sunkBoats": [],
+        "repeatedShots": 0,
+        "outsideShots": 0,
+        "hitsOnBoats": [],
+        "missedShots": 3
+      },
+      "remainingShips": 3,
+      "postGameAuditOnly": [
+        {
+          "position": "G10",
+          "outcome": "MISS"
+        },
+        {
+          "position": "I10",
+          "outcome": "MISS"
+        },
+        {
+          "position": "J10",
+          "outcome": "MISS"
+        }
+      ]
+    },
+    {
+      "number": 17,
+      "promptVersion": 2,
+      "reason": "As três continuações direitas são água, pelo que a Nau é H1-I1-J1. Terminar com I1/J1 e usar o terceiro tiro para procurar Barca em C4.",
+      "shots": [
+        {
+          "row": "I",
+          "column": 1
+        },
+        {
+          "row": "J",
+          "column": 1
+        },
+        {
+          "row": "C",
+          "column": 4
+        }
+      ],
+      "response": {
+        "validShots": 3,
+        "sunkBoats": [
+          {
+            "count": 1,
+            "type": "Nau"
+          }
+        ],
+        "repeatedShots": 0,
+        "outsideShots": 0,
+        "hitsOnBoats": [],
+        "missedShots": 1
+      },
+      "remainingShips": 2,
+      "postGameAuditOnly": [
+        {
+          "position": "I1",
+          "outcome": "HIT"
+        },
+        {
+          "position": "J1",
+          "outcome": "SUNK"
+        },
+        {
+          "position": "C4",
+          "outcome": "MISS"
+        }
+      ]
+    },
+    {
+      "number": 18,
+      "promptVersion": 2,
+      "reason": "A Caravela de E5 só pode ser E4-E5: E6 toca na Fragata e F5 tocaria no Galeão. Com a Nau H1-I1-J1 confirmada, restam apenas B4/F1/F2/J6 para duas Barcas. Testar F1/F2/J6; F1 e F2 não podem conter duas Barcas adjacentes.",
+      "shots": [
+        {
+          "row": "F",
+          "column": 1
+        },
+        {
+          "row": "F",
+          "column": 2
+        },
+        {
+          "row": "J",
+          "column": 6
+        }
+      ],
+      "response": {
+        "validShots": 3,
+        "sunkBoats": [
+          {
+            "count": 2,
+            "type": "Barca"
+          }
+        ],
+        "repeatedShots": 0,
+        "outsideShots": 0,
+        "hitsOnBoats": [],
+        "missedShots": 1
+      },
+      "remainingShips": 0,
+      "postGameAuditOnly": [
+        {
+          "position": "F1",
+          "outcome": "MISS"
+        },
+        {
+          "position": "F2",
+          "outcome": "SUNK"
+        },
+        {
+          "position": "J6",
+          "outcome": "SUNK"
+        }
+      ]
+    }
+  ],
+  "fleetCommitment": "cca304836e3197aeac4b16d47c920edcc3787488e44072f8c756905624a22744",
+  "revealedSalt": "ccac5dd8-e9d4-4f78-8e70-1e456065b330",
+  "fleetRevealedOnlyAfterGameOver": [
+    {
+      "type": "Galeao",
+      "positions": [
+        "G4",
+        "H4",
+        "H5",
+        "H6",
+        "I4"
+      ]
+    },
+    {
+      "type": "Fragata",
+      "positions": [
+        "E10",
+        "E7",
+        "E8",
+        "E9"
+      ]
+    },
+    {
+      "type": "Nau",
+      "positions": [
+        "H1",
+        "I1",
+        "J1"
+      ]
+    },
+    {
+      "type": "Nau",
+      "positions": [
+        "B2",
+        "C2",
+        "D2"
+      ]
+    },
+    {
+      "type": "Caravela",
+      "positions": [
+        "H8",
+        "I8"
+      ]
+    },
+    {
+      "type": "Caravela",
+      "positions": [
+        "C5",
+        "C6"
+      ]
+    },
+    {
+      "type": "Caravela",
+      "positions": [
+        "E4",
+        "E5"
+      ]
+    },
+    {
+      "type": "Barca",
+      "positions": [
+        "J6"
+      ]
+    },
+    {
+      "type": "Barca",
+      "positions": [
+        "F2"
+      ]
+    },
+    {
+      "type": "Barca",
+      "positions": [
+        "B9"
+      ]
+    },
+    {
+      "type": "Barca",
+      "positions": [
+        "A7"
+      ]
+    }
+  ],
+  "commitmentVerified": true,
+  "postGameReplayVerified": true,
+  "totals": {
+    "HIT": 14,
+    "MISS": 29,
+    "SUNK": 11
+  }
+}

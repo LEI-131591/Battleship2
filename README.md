@@ -206,6 +206,19 @@ The tests use temporary databases and cover:
 - Keeping games separate and rejecting duplicate moves.
 - Rolling back a complete move when the third shot cannot be saved.
 
+
+---
+
+## AI Communication Protocol — Part C
+
+The protocol exercises were performed by the AI assistant using the
+project's Java simulator. The records include four validated example
+boards and eleven exchanges with actual JSON responses.
+
+[View the protocol exercises](docs/ia/C-protocolo-evidencias.md)
+
+---
+
 ### Scope
 
 Persistence currently supports the console simulator. It stores historical moves; it does not restore a saved game for continued play or persist moves from the REST server.

@@ -43,6 +43,11 @@ public class Tasks {
 	 * This task also tests the fighting element of a round of three shots
 	 */
 	public static void menu() {
+		menu(BoardView.NONE);
+	}
+
+	/** Runs the existing simulation with an optional read-only board view. */
+	public static void menu(BoardView boardView) {
 
 		Path databaseFile = Path.of("data", "battleship.db");
 
@@ -69,12 +74,14 @@ public class Tasks {
 					myFleet = Fleet.createRandom();
 					game = new Game(myFleet, repository);
 					game.printMyBoard(false, true);
+					boardView.update(game);
 					break;
 				case LEFROTA:
 					moveTimer.reset();
 					myFleet = buildFleet(in);
 					game = new Game(myFleet, repository);
 					game.printMyBoard(false, true);
+					boardView.update(game);
 					break;
 				case STATUS:
 					if (myFleet != null)
@@ -94,6 +101,7 @@ public class Tasks {
 						printMoveTime(moveTimer, game);
 						myFleet.printStatus();
 						game.printMyBoard(true, false);
+						boardView.update(game);
 
 						if (game.getRemainingShips() == 0) {
 							game.over();
@@ -114,6 +122,7 @@ public class Tasks {
 							printMoveTime(moveTimer, game);
 							myFleet.printStatus();
 							game.printMyBoard(true, false);
+							boardView.update(game);
 							try {
 								Thread.sleep(3000);
 							} catch (InterruptedException e) {
@@ -131,6 +140,12 @@ public class Tasks {
 					if (game != null)
 						game.printMyBoard(true, true);
 					break;
+				case "gui":
+					if (boardView == BoardView.NONE)
+						System.out.println("Inicia o modo gráfico com mvn javafx:run.");
+					else
+						boardView.open(game);
+					break;
 				case EXPORTAR:
 					if (game == null || game.getAlienMoves().isEmpty()) {
 						System.out.println("Ainda não existem rajadas para exportar.");
@@ -143,9 +158,9 @@ public class Tasks {
 						System.err.println("Não foi possível exportar as rajadas: " + e.getMessage());
 					}
 					break;
-                case AJUDA:
-                    menuHelp();
-                    break;
+				case AJUDA:
+					menuHelp();
+					break;
 				case "jogos": {
 					var savedGames = repository.findGames();
 
@@ -200,7 +215,7 @@ public class Tasks {
 				default:
 					System.out.println("Que comando é esse??? Repete ...");
 			}
-			
+
 			if (game != null && game.getRemainingShips() > 0 && !moveTimer.isStarted()) {
 				moveTimer.reset();
 				moveTimer.start();
@@ -241,6 +256,7 @@ public class Tasks {
 		System.out.println("- " + TIROS + ": Lista os tiros válidos realizados (* = tiro em navio, o = tiro na água)");
 		System.out.println("- " + EXPORTAR + ": Exporta as rajadas da partida atual para CSV.");
 		System.out.println("- " + DESISTIR + ": Encerra o jogo.");
+		System.out.println("- gui: Reabre o tabuleiro no modo gráfico (mvn javafx:run).");
 		System.out.println("- jogos: Lista os jogos guardados.");
 		System.out.println("- historico ID_DO_JOGO: Mostra as jogadas desse jogo.");
 		System.out.println("===============================================================");

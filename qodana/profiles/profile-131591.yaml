@@ -1,0 +1,10 @@
+# 131591 - Daniel Santos
+
+profile:
+  base:
+    name: empty
+  inspections:
+    - inspection: NonCommentSourceStatements
+      enabled: true
+      options:
+        m_limit: 30

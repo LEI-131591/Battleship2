@@ -1,0 +1,13 @@
+# 131056 - João Dimitry
+version: "1.0"
+
+profile:
+  base:
+    name: empty
+
+  inspections:
+    - inspection: OverlyComplexClass
+      enabled: true
+      severity: WARNING
+      options:
+        m_limit: 46

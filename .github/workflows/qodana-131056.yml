@@ -1,0 +1,40 @@
+# 131056 - João Dimitry
+name: Qodana Large Class 131056
+
+on:
+  pull_request:
+    branches:
+      - master
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  checks: write
+  pull-requests: write
+
+jobs:
+  qodana-large-class-131056:
+    name: Qodana Large Class 131056
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Obter o código
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+
+      - name: Executar análise Qodana
+        uses: JetBrains/qodana-action@v2026.2
+        with:
+          args: --config qodana-131056.yaml
+          pr-mode: false
+          upload-result: true
+          artifact-name: qodana-report-131056
+          use-annotations: true
+          post-pr-comment: true
+        env:
+          QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }}

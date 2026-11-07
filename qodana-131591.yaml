@@ -1,0 +1,18 @@
+# 131591 - Daniel Santos
+version: "1.0"
+
+linter: jetbrains/qodana-jvm-community:2026.2
+
+projectJDK: 21
+
+# Perfil mínimo: apenas a inspeção Long Method.
+profile:
+  name: empty
+  inspections:
+    - inspection: NonCommentSourceStatements
+      enabled: true
+      options:
+        m_limit: 30
+
+# O gate falha quando encontra pelo menos uma ocorrência.
+failThreshold: 0

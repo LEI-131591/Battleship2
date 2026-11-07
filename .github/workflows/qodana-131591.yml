@@ -1,0 +1,35 @@
+# 131591 - Daniel Santos
+name: Qodana - Long Method - 131591
+
+on:
+  push:
+    branches:
+      - master
+      - '131591'
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  checks: write
+  pull-requests: write
+
+jobs:
+  qodana:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+
+      - name: Análise Qodana
+        uses: JetBrains/qodana-action@v2026.2
+        with:
+          args: --config qodana-131591.yaml
+          pr-mode: false
+          upload-result: true
+          use-annotations: true
+          post-pr-comment: true

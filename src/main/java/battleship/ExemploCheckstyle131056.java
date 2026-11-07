@@ -2,7 +2,7 @@ package battleship;
 
 public class ExemploCheckstyle131056 {
 
-    public int duplicar(int Numero) {
-        return Numero * 2;
+    public int duplicar(int numero) {
+        return numero * 2;
     }
 }

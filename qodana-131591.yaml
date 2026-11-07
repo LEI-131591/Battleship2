@@ -5,13 +5,9 @@ linter: jetbrains/qodana-jvm-community:2026.2
 
 projectJDK: 21
 
-# Perfil mínimo: apenas a inspeção Long Method.
+# Perfil personalizado para detetar Long Method.
 profile:
-  name: empty
-  inspections:
-    - inspection: NonCommentSourceStatements
-      enabled: true
-      options:
-        m_limit: 30
+  path: .qodana/profiles/profile-131591.yaml
 
+# O gate falha quando encontra pelo menos uma ocorrência.
 failThreshold: 0

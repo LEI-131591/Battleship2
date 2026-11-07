@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - master
+      - '131591'
   pull_request:
   workflow_dispatch:
 

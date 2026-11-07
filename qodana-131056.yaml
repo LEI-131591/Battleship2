@@ -7,7 +7,7 @@ projectJDK: 21
 profile:
   name: empty
   inspections:
-    - inspection: OverlyComplexClass
+    - inspection: ClassComplexity
       enabled: true
       severity: WARNING
       options:

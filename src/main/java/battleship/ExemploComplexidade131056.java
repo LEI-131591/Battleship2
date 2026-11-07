@@ -1,4 +1,4 @@
-﻿package battleship;
+package battleship;
 
 public class ExemploComplexidade131056 {
     public int calcular(int valor) {

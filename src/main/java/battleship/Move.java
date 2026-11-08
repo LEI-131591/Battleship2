@@ -104,9 +104,10 @@ public class Move implements IMove {
 		if (verbose) {
 			// Construção da mensagem de saída
 			StringBuilder output = new StringBuilder();
+			String repeatedSuffix = repeatedShots > 1 ? "s" : "";
 
 			if (validShots == 0 && repeatedShots > 0) {
-				output.append(repeatedShots).append(" tiro").append(repeatedShots > 1 ? "s" : "").append(" repetido").append(repeatedShots > 1 ? "s" : "");
+				output.append(repeatedShots).append(" tiro").append(repeatedSuffix).append(" repetido").append(repeatedSuffix);
 			} else {
 				if (validShots > 0) {
 					output.append(validShots).append(" tiro").append(validShots > 1 ? "s" : "").append(" válido").append(validShots > 1 ? "s" : "").append(": ");
@@ -124,7 +125,7 @@ public class Move implements IMove {
 					if (validShots > 0) {
 						output.append(", ");
 					}
-					output.append(repeatedShots).append(" tiro").append(repeatedShots > 1 ? "s" : "").append(" repetido").append(repeatedShots > 1 ? "s" : "");
+					output.append(repeatedShots).append(" tiro").append(repeatedSuffix).append(" repetido").append(repeatedSuffix);
 				}
 			}
 

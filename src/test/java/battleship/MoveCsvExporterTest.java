@@ -42,6 +42,23 @@ class MoveCsvExporterTest {
     }
 
     @Test
+    void failedExportLeavesPreviouslyExportedFilesUntouched() throws IOException {
+        IMove valid = new Move(1, List.of(new Position('A', 1)),
+                List.of(new IGame.ShotResult(true, false, null, false)));
+        IMove inconsistent = new Move(2, List.of(new Position('B', 2)), List.of());
+        Path previous = MoveCsvExporter.export(List.of(valid), directory);
+        String contents = Files.readString(previous);
+
+        assertThrows(IllegalArgumentException.class,
+                () -> MoveCsvExporter.export(List.of(valid, inconsistent), directory));
+
+        try (var files = Files.list(directory)) {
+            assertEquals(List.of(previous), files.toList());
+        }
+        assertEquals(contents, Files.readString(previous));
+    }
+
+    @Test
     void rejectsAnEmptyHistoryWithoutCreatingAFile() {
         Path exports = directory.resolve("exports");
 

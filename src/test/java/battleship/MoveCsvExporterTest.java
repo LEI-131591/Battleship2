@@ -1,5 +1,6 @@
 package battleship;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -15,6 +16,7 @@ class MoveCsvExporterTest {
     Path directory;
 
     @Test
+    @DisplayName("Exporta todos os tiros por ordem e preserva exportações anteriores")
     void exportsEveryShotInMoveOrderWithItsOutcome() throws IOException {
         IShip barge = new Barge(Compass.NORTH, new Position('A', 1));
         IMove first = new Move(1,
@@ -42,6 +44,7 @@ class MoveCsvExporterTest {
     }
 
     @Test
+    @DisplayName("Uma rajada inconsistente não deixa um CSV parcial")
     void failedExportLeavesPreviouslyExportedFilesUntouched() throws IOException {
         IMove valid = new Move(1, List.of(new Position('A', 1)),
                 List.of(new IGame.ShotResult(true, false, null, false)));
@@ -59,11 +62,35 @@ class MoveCsvExporterTest {
     }
 
     @Test
+    @DisplayName("Um histórico vazio é rejeitado antes de criar o destino")
     void rejectsAnEmptyHistoryWithoutCreatingAFile() {
         Path exports = directory.resolve("exports");
 
         assertThrows(IllegalArgumentException.class,
                 () -> MoveCsvExporter.export(List.of(), exports));
         assertFalse(Files.exists(exports));
+    }
+
+    @Test
+    @DisplayName("Um histórico ausente é rejeitado antes de criar o destino")
+    void rejectsANullHistoryWithoutCreatingTheDirectory() {
+        Path exports = directory.resolve("exports");
+
+        assertThrows(IllegalArgumentException.class, () -> MoveCsvExporter.export(null, exports));
+        assertFalse(Files.exists(exports));
+    }
+
+    @Test
+    @DisplayName("Um ficheiro no lugar da diretoria de destino fica intacto")
+    void rejectsAFileAsTheExportDirectory() throws IOException {
+        Path blockedDirectory = Files.writeString(directory.resolve("exports"), "preservar");
+        IMove move = new Move(1, List.of(new Position('A', 1)),
+                List.of(new IGame.ShotResult(true, false, null, false)));
+
+        assertThrows(IOException.class, () -> MoveCsvExporter.export(List.of(move), blockedDirectory));
+        assertEquals("preservar", Files.readString(blockedDirectory));
+        try (var files = Files.list(directory)) {
+            assertEquals(List.of(blockedDirectory), files.toList());
+        }
     }
 }

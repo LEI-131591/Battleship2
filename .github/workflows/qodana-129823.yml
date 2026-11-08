@@ -24,7 +24,8 @@ jobs:
       - name: Run Qodana Community
         uses: JetBrains/qodana-action@v2026.2
         with:
-          args: --config,qodana-129823.yaml,--linter,qodana-jvm-community,--within-docker,false
+          args: --config qodana-129823.yaml --linter qodana-jvm-community --within-docker false
           pr-mode: false
+          post-pr-comment: false
           upload-result: true
           artifact-name: qodana-report-129823

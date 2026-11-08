@@ -1,0 +1,30 @@
+name: Qodana - LEI-129823
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - ficha3-csv-129823
+  pull_request:
+    branches: [master]
+    paths:
+      - qodana-129823.yaml
+      - .github/workflows/qodana-129823.yml
+
+permissions:
+  contents: read
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run Qodana Community
+        uses: JetBrains/qodana-action@v2026.2
+        with:
+          args: --config,qodana-129823.yaml,--linter,qodana-jvm-community,--within-docker,false
+          pr-mode: false
+          upload-result: true
+          artifact-name: qodana-report-129823

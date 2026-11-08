@@ -1,9 +1,10 @@
 # 129823 - Pedro Victor
-profile:
-  base:
-    name: empty
-  inspections:
-    - inspection: SwitchStatementWithTooManyBranches
-      enabled: true
-      options:
-        m_limit: 13
+name: Switch branches 129823
+baseProfile: empty
+
+inspections:
+  - inspection: SwitchStatementWithTooManyBranches
+    enabled: true
+    severity: WARNING
+    options:
+      m_limit: 13

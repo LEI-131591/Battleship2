@@ -79,19 +79,22 @@ public class Move implements IMove {
 				continue;
 			}
 
-			if (result.repeated())
-				repeatedShots++; // tiro repetido
-			else {
-				// Tiro válido
-				validShots++;
-				if (result.ship() == null)
-					missedShots++; // Tiro na água
-				else{
-					String boatName = result.ship().getCategory();
-					hitsPerBoat.put(boatName, hitsPerBoat.getOrDefault(boatName, 0) + 1);
-					if (result.sunk())
-						sunkBoatsCount.put(boatName, sunkBoatsCount.getOrDefault(boatName, 0) + 1); // Contar barcos do mesmo tipo afundados
-				}
+			if (result.repeated()) {
+				repeatedShots++;
+				continue;
+			}
+
+			validShots++;
+			IShip ship = result.ship();
+			if (ship == null) {
+				missedShots++;
+				continue;
+			}
+
+			String boatName = ship.getCategory();
+			hitsPerBoat.put(boatName, hitsPerBoat.getOrDefault(boatName, 0) + 1);
+			if (result.sunk()) {
+				sunkBoatsCount.put(boatName, sunkBoatsCount.getOrDefault(boatName, 0) + 1);
 			}
 		}
 

@@ -62,12 +62,12 @@ public final class MoveCsvExporter {
             for (int i = 0; i < shots.size(); i++) {
                 IPosition shot = shots.get(i);
                 printer.printRecord(move.getNumber(), shot.getClassicRow(),
-                        shot.getClassicColumn(), outcome(results.get(i)));
+                        shot.getClassicColumn(), formatOutcome(results.get(i)));
             }
         }
     }
 
-    private static String outcome(IGame.ShotResult result) {
+    private static String formatOutcome(IGame.ShotResult result) {
         if (!result.valid()) return "INVALID";
         if (result.repeated()) return "REPEATED";
         if (result.ship() == null) return "MISS";

@@ -109,24 +109,7 @@ public class Move implements IMove {
 					output.append(validShots).append(" tiro").append(validShots > 1 ? "s" : "").append(" válido").append(validShots > 1 ? "s" : "").append(": ");
 				}
 
-				// Atualizar lógica para contar múltiplos barcos afundados do mesmo tipo
-				if (!sunkBoatsCount.isEmpty()) {
-					for (Map.Entry<String, Integer> entry : sunkBoatsCount.entrySet()) {
-						String boatName = entry.getKey();
-						int count = entry.getValue();
-						output.append(count).append(" ").append(boatName).append(count > 1 ? "s" : "").append(" ao fundo").append(" + ");
-					}
-				}
-
-				if (!hitsPerBoat.isEmpty()) {
-					for (Map.Entry<String, Integer> entry : hitsPerBoat.entrySet()) {
-						String boatName = entry.getKey();
-						int hits = entry.getValue();
-						if (!sunkBoatsCount.containsKey(boatName)) {
-							output.append(hits).append(" tiro").append(hits > 1 ? "s" : "").append(" num(a) ").append(boatName).append(" + ");
-						}
-					}
-				}
+				appendShipOutcomes(output, sunkBoatsCount, hitsPerBoat);
 
 				if (missedShots > 0) {
 					output.append(missedShots).append(" tiro").append(missedShots > 1 ? "s" : "").append(" na água");
@@ -201,5 +184,26 @@ public class Move implements IMove {
 
 		// Retornar o JSON
 		return jsonString;
+	}
+
+	private static void appendShipOutcomes(StringBuilder output, Map<String, Integer> sunkBoatsCount,
+			Map<String, Integer> hitsPerBoat) {
+		if (!sunkBoatsCount.isEmpty()) {
+			for (Map.Entry<String, Integer> entry : sunkBoatsCount.entrySet()) {
+				String boatName = entry.getKey();
+				int count = entry.getValue();
+				output.append(count).append(" ").append(boatName).append(count > 1 ? "s" : "").append(" ao fundo").append(" + ");
+			}
+		}
+
+		if (!hitsPerBoat.isEmpty()) {
+			for (Map.Entry<String, Integer> entry : hitsPerBoat.entrySet()) {
+				String boatName = entry.getKey();
+				int hits = entry.getValue();
+				if (!sunkBoatsCount.containsKey(boatName)) {
+					output.append(hits).append(" tiro").append(hits > 1 ? "s" : "").append(" num(a) ").append(boatName).append(" + ");
+				}
+			}
+		}
 	}
 }

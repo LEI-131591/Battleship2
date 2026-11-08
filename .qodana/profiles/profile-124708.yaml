@@ -1,0 +1,10 @@
+# 124708 - José Cardoso
+name: "Perfil Qodana 124708"
+baseProfile: empty
+
+inspections:
+  - inspection: MethodWithTooManyParameters
+    enabled: true
+    severity: WARNING
+    options:
+      m_limit: 4

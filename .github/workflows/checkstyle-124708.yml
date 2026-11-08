@@ -1,0 +1,30 @@
+# 124708 - José Cardoso
+name: Checkstyle Metodos 124708
+
+on:
+  pull_request:
+    branches:
+      - master
+
+permissions:
+  contents: read
+  checks: write
+
+jobs:
+  checkstyle-metodos-124708:
+    name: Checkstyle Metodos 124708
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Obter o codigo
+        uses: actions/checkout@v4
+
+      - name: Verificar nomes dos metodos
+        uses: dbelyaev/action-checkstyle@v4.5.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          checkstyle_config: checkstyle-124708.xml
+          reporter: github-pr-check
+          level: error
+          filter_mode: nofilter
+          fail_level: any

@@ -3,7 +3,7 @@ name: "Perfil Qodana 124708"
 baseProfile: empty
 
 inspections:
-  - inspection: MethodWithTooManyParameters
+  - inspection: ParametersPerMethod
     enabled: true
     severity: WARNING
     options:

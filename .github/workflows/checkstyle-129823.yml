@@ -1,0 +1,27 @@
+# 129823 - Pedro Victor
+name: Checkstyle package gate 129823
+
+on:
+  pull_request:
+    branches: [master]
+
+permissions:
+  contents: read
+  checks: write
+  pull-requests: read
+
+jobs:
+  package-names-129823:
+    name: Checkstyle PackageName 129823
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check Java package names
+        uses: dbelyaev/action-checkstyle@v4.5.0
+        with:
+          checkstyle_config: checkstyle-129823.xml
+          workdir: src
+          reporter: github-pr-check
+          level: error
+          filter_mode: nofilter
+          fail_level: any

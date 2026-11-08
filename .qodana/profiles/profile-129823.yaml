@@ -1,0 +1,9 @@
+# 129823 - Pedro Victor
+profile:
+  base:
+    name: empty
+  inspections:
+    - inspection: SwitchStatementWithTooManyBranches
+      enabled: true
+      options:
+        m_limit: 13

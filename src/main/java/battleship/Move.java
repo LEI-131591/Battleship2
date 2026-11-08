@@ -79,19 +79,22 @@ public class Move implements IMove {
 				continue;
 			}
 
-			if (result.repeated())
-				repeatedShots++; // tiro repetido
-			else {
-				// Tiro válido
-				validShots++;
-				if (result.ship() == null)
-					missedShots++; // Tiro na água
-				else{
-					String boatName = result.ship().getCategory();
-					hitsPerBoat.put(boatName, hitsPerBoat.getOrDefault(boatName, 0) + 1);
-					if (result.sunk())
-						sunkBoatsCount.put(boatName, sunkBoatsCount.getOrDefault(boatName, 0) + 1); // Contar barcos do mesmo tipo afundados
-				}
+			if (result.repeated()) {
+				repeatedShots++;
+				continue;
+			}
+
+			validShots++;
+			IShip ship = result.ship();
+			if (ship == null) {
+				missedShots++;
+				continue;
+			}
+
+			String boatName = ship.getCategory();
+			hitsPerBoat.put(boatName, hitsPerBoat.getOrDefault(boatName, 0) + 1);
+			if (result.sunk()) {
+				sunkBoatsCount.put(boatName, sunkBoatsCount.getOrDefault(boatName, 0) + 1);
 			}
 		}
 
@@ -101,32 +104,16 @@ public class Move implements IMove {
 		if (verbose) {
 			// Construção da mensagem de saída
 			StringBuilder output = new StringBuilder();
+			String repeatedSuffix = repeatedShots > 1 ? "s" : "";
 
 			if (validShots == 0 && repeatedShots > 0) {
-				output.append(repeatedShots).append(" tiro").append(repeatedShots > 1 ? "s" : "").append(" repetido").append(repeatedShots > 1 ? "s" : "");
+				output.append(repeatedShots).append(" tiro").append(repeatedSuffix).append(" repetido").append(repeatedSuffix);
 			} else {
 				if (validShots > 0) {
 					output.append(validShots).append(" tiro").append(validShots > 1 ? "s" : "").append(" válido").append(validShots > 1 ? "s" : "").append(": ");
 				}
 
-				// Atualizar lógica para contar múltiplos barcos afundados do mesmo tipo
-				if (!sunkBoatsCount.isEmpty()) {
-					for (Map.Entry<String, Integer> entry : sunkBoatsCount.entrySet()) {
-						String boatName = entry.getKey();
-						int count = entry.getValue();
-						output.append(count).append(" ").append(boatName).append(count > 1 ? "s" : "").append(" ao fundo").append(" + ");
-					}
-				}
-
-				if (!hitsPerBoat.isEmpty()) {
-					for (Map.Entry<String, Integer> entry : hitsPerBoat.entrySet()) {
-						String boatName = entry.getKey();
-						int hits = entry.getValue();
-						if (!sunkBoatsCount.containsKey(boatName)) {
-							output.append(hits).append(" tiro").append(hits > 1 ? "s" : "").append(" num(a) ").append(boatName).append(" + ");
-						}
-					}
-				}
+				appendShipOutcomes(output, sunkBoatsCount, hitsPerBoat);
 
 				if (missedShots > 0) {
 					output.append(missedShots).append(" tiro").append(missedShots > 1 ? "s" : "").append(" na água");
@@ -138,7 +125,7 @@ public class Move implements IMove {
 					if (validShots > 0) {
 						output.append(", ");
 					}
-					output.append(repeatedShots).append(" tiro").append(repeatedShots > 1 ? "s" : "").append(" repetido").append(repeatedShots > 1 ? "s" : "");
+					output.append(repeatedShots).append(" tiro").append(repeatedSuffix).append(" repetido").append(repeatedSuffix);
 				}
 			}
 
@@ -201,5 +188,26 @@ public class Move implements IMove {
 
 		// Retornar o JSON
 		return jsonString;
+	}
+
+	private static void appendShipOutcomes(StringBuilder output, Map<String, Integer> sunkBoatsCount,
+			Map<String, Integer> hitsPerBoat) {
+		if (!sunkBoatsCount.isEmpty()) {
+			for (Map.Entry<String, Integer> entry : sunkBoatsCount.entrySet()) {
+				String boatName = entry.getKey();
+				int count = entry.getValue();
+				output.append(count).append(" ").append(boatName).append(count > 1 ? "s" : "").append(" ao fundo").append(" + ");
+			}
+		}
+
+		if (!hitsPerBoat.isEmpty()) {
+			for (Map.Entry<String, Integer> entry : hitsPerBoat.entrySet()) {
+				String boatName = entry.getKey();
+				int hits = entry.getValue();
+				if (!sunkBoatsCount.containsKey(boatName)) {
+					output.append(hits).append(" tiro").append(hits > 1 ? "s" : "").append(" num(a) ").append(boatName).append(" + ");
+				}
+			}
+		}
 	}
 }

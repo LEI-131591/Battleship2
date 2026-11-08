@@ -12,6 +12,10 @@ import java.util.List;
 
 /** Exports the shots and results of the current game to a CSV file. */
 public final class MoveCsvExporter {
+    private static final CSVFormat EXPORT_FORMAT = CSVFormat.DEFAULT.builder()
+            .setHeader("rajada", "linha", "coluna", "resultado")
+            .get();
+
     private MoveCsvExporter() {
     }
 
@@ -28,17 +32,13 @@ public final class MoveCsvExporter {
             throw new IllegalArgumentException("Não existem rajadas para exportar.");
         }
 
-        CSVFormat format = CSVFormat.DEFAULT.builder()
-                .setHeader("rajada", "linha", "coluna", "resultado")
-                .get();
-
         Files.createDirectories(directory);
         Path stagingFile = Files.createTempFile(directory, "rajadas-", ".tmp");
         String stagingName = stagingFile.getFileName().toString();
         Path csvFile = stagingFile.resolveSibling(stagingName.replace(".tmp", ".csv"));
         try {
             try (BufferedWriter writer = Files.newBufferedWriter(stagingFile, StandardCharsets.UTF_8);
-                 CSVPrinter printer = new CSVPrinter(writer, format)) {
+                 CSVPrinter printer = new CSVPrinter(writer, EXPORT_FORMAT)) {
                 writeMoves(moves, printer);
             }
             return Files.move(stagingFile, csvFile);
@@ -62,12 +62,12 @@ public final class MoveCsvExporter {
             for (int i = 0; i < shots.size(); i++) {
                 IPosition shot = shots.get(i);
                 printer.printRecord(move.getNumber(), shot.getClassicRow(),
-                        shot.getClassicColumn(), outcome(results.get(i)));
+                        shot.getClassicColumn(), formatOutcome(results.get(i)));
             }
         }
     }
 
-    private static String outcome(IGame.ShotResult result) {
+    private static String formatOutcome(IGame.ShotResult result) {
         if (!result.valid()) return "INVALID";
         if (result.repeated()) return "REPEATED";
         if (result.ship() == null) return "MISS";

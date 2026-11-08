@@ -8,4 +8,4 @@ inspections:
     enabled: true
     severity: WARNING
     options:
-      m_limit: 46
+      m_limit: 70

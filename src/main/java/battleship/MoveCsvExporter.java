@@ -3,6 +3,7 @@ package battleship;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -27,28 +28,43 @@ public final class MoveCsvExporter {
             throw new IllegalArgumentException("Não existem rajadas para exportar.");
         }
 
-        Files.createDirectories(directory);
-        Path file = Files.createTempFile(directory, "rajadas-", ".csv");
         CSVFormat format = CSVFormat.DEFAULT.builder()
                 .setHeader("rajada", "linha", "coluna", "resultado")
                 .get();
 
-        try (CSVPrinter printer = new CSVPrinter(
-                Files.newBufferedWriter(file, StandardCharsets.UTF_8), format)) {
-            for (IMove move : moves) {
-                List<IPosition> shots = move.getShots();
-                List<IGame.ShotResult> results = move.getShotResults();
-                if (shots.size() != results.size()) {
-                    throw new IllegalArgumentException("A rajada não tem um resultado por tiro.");
-                }
-                for (int i = 0; i < shots.size(); i++) {
-                    IPosition shot = shots.get(i);
-                    printer.printRecord(move.getNumber(), shot.getClassicRow(),
-                            shot.getClassicColumn(), outcome(results.get(i)));
-                }
+        Files.createDirectories(directory);
+        Path stagingFile = Files.createTempFile(directory, "rajadas-", ".tmp");
+        String stagingName = stagingFile.getFileName().toString();
+        Path csvFile = stagingFile.resolveSibling(stagingName.replace(".tmp", ".csv"));
+        try {
+            try (BufferedWriter writer = Files.newBufferedWriter(stagingFile, StandardCharsets.UTF_8);
+                 CSVPrinter printer = new CSVPrinter(writer, format)) {
+                writeMoves(moves, printer);
+            }
+            return Files.move(stagingFile, csvFile);
+        } catch (IOException | RuntimeException | Error failure) {
+            try {
+                Files.deleteIfExists(stagingFile);
+            } catch (IOException | RuntimeException cleanupFailure) {
+                failure.addSuppressed(cleanupFailure);
+            }
+            throw failure;
+        }
+    }
+
+    private static void writeMoves(List<IMove> moves, CSVPrinter printer) throws IOException {
+        for (IMove move : moves) {
+            List<IPosition> shots = move.getShots();
+            List<IGame.ShotResult> results = move.getShotResults();
+            if (shots.size() != results.size()) {
+                throw new IllegalArgumentException("A rajada não tem um resultado por tiro.");
+            }
+            for (int i = 0; i < shots.size(); i++) {
+                IPosition shot = shots.get(i);
+                printer.printRecord(move.getNumber(), shot.getClassicRow(),
+                        shot.getClassicColumn(), outcome(results.get(i)));
             }
         }
-        return file;
     }
 
     private static String outcome(IGame.ShotResult result) {

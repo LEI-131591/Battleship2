@@ -1,0 +1,10 @@
+# 129823 - Pedro Victor
+name: Switch branches 129823
+baseProfile: empty
+
+inspections:
+  - inspection: SwitchStatementWithTooManyBranches
+    enabled: true
+    severity: WARNING
+    options:
+      m_limit: 13

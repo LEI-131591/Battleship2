@@ -1,0 +1,31 @@
+# 129823 - Pedro Victor
+name: Qodana smell gate 129823
+
+on:
+  pull_request:
+    branches: [master]
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  checks: write
+  pull-requests: read
+
+jobs:
+  switch-branches-129823:
+    name: Qodana Switch Statements 129823
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Check switch branch counts
+        uses: JetBrains/qodana-action@v2026.2
+        with:
+          args: --config qodana-smell-129823.yaml --linter qodana-jvm-community --within-docker false
+          pr-mode: false
+          post-pr-comment: false
+          upload-result: true
+          artifact-name: qodana-switch-report-129823

@@ -1,0 +1,35 @@
+# 124708 - José Cardoso
+name: Qodana Long Parameter List 124708
+
+on:
+  pull_request:
+    branches:
+      - master
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  checks: write
+  pull-requests: write
+
+jobs:
+  qodana-parameter-list-124708:
+    name: Qodana Long Parameter List 124708
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Obter o codigo
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+
+      - name: Executar analise Qodana
+        uses: JetBrains/qodana-action@v2026.2
+        with:
+          args: --config qodana-124708.yaml
+          pr-mode: false
+          upload-result: true
+          artifact-name: qodana-report-124708
+          use-annotations: true
+          post-pr-comment: true

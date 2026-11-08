@@ -1,0 +1,9 @@
+# 129823 - Pedro Victor
+version: "1.0"
+linter: qodana-jvm-community
+projectJDK: "21"
+profile:
+  path: .qodana/profiles/profile-129823.yaml
+failureConditions:
+  severityThresholds:
+    any: 0

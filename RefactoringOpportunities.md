@@ -7,7 +7,6 @@
 | `Move::processEnemyFire`, texto dos tiros repetidos | Expressão de plural repetida quatro vezes | Introduce Variable | 129823 |
 | `MoveCsvExporter::export` | Construção repetida de um formato CSV fixo | Introduce Constant | 129823 |
 | `MoveCsvExporter::outcome` | Nome pouco específico para a transformação em texto CSV | Rename Method | 129823 |
-
 | `CallbackClient::sendShots`, criação da rajada | Método longo com conversão de posições misturada com o envio HTTP | Extract Method | 131056 |
 | `CallbackClient::sendShots`, timeout do pedido | Valor fixo sem nome na configuração do pedido | Introduce Constant | 131056 |
 | `CallbackClient::sendShots`, validação HTTP | Consulta repetida do mesmo estado HTTP | Introduce Variable | 131056 |

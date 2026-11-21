@@ -296,6 +296,9 @@ mvn test
 > [!TIP]
 > Use the `-Dtest=ClassName` flag to run specific test suites during development.
 
+### Workflow de GitHub Actions (CI)
+O repositório utiliza o workflow `.github/workflows/maven.yml` (**Java CI with Maven**) para integração contínua. Este workflow é executado automaticamente em qualquer `push` (incluindo ramos de trabalho locais), em `pull_request` para `master` e também manualmente através de `workflow_dispatch`. Em cada execução, configura o **JDK 21 (Temurin)** com cache Maven e executa `mvn -B package --file pom.xml` para compilar o projeto e correr toda a bateria de testes unitários JUnit.
+
 ---
 
 ## 🤝 Contributing

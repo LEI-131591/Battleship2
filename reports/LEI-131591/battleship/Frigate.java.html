@@ -19,15 +19,15 @@ public class Frigate extends Ship {
 	public Frigate(Compass bearing, IPosition pos) {
 <span class="fc" id="L20">		super(&quot;Fragata&quot;, bearing, pos, 4);</span>
 
-<span class="pc bpc" id="L22" title="1 of 5 branches missed.">		switch (bearing) {</span>
+<span class="pc bpc" id="L22" title="2 of 5 branches missed.">		switch (bearing) {</span>
 			case NORTH:
 <span class="fc bfc" id="L24" title="All 2 branches covered.">				for (int r = 0; r &lt; this.getSize(); r++)</span>
 <span class="fc" id="L25">					getPositions().add(new Position(pos.getRow() + r, pos.getColumn()));</span>
 <span class="fc" id="L26">				break;</span>
 			case SOUTH:
-<span class="fc bfc" id="L28" title="All 2 branches covered.">				for (int r = 0; r &lt; this.getSize(); r++)</span>
-<span class="fc" id="L29">					getPositions().add(new Position(pos.getRow() + r, pos.getColumn()));</span>
-<span class="fc" id="L30">				break;</span>
+<span class="nc bnc" id="L28" title="All 2 branches missed.">				for (int r = 0; r &lt; this.getSize(); r++)</span>
+<span class="nc" id="L29">					getPositions().add(new Position(pos.getRow() + r, pos.getColumn()));</span>
+<span class="nc" id="L30">				break;</span>
 			case EAST:
 <span class="fc bfc" id="L32" title="All 2 branches covered.">				for (int c = 0; c &lt; this.getSize(); c++)</span>
 <span class="fc" id="L33">					getPositions().add(new Position(pos.getRow(), pos.getColumn() + c));</span>

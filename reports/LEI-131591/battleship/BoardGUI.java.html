@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BoardGUI.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">BattleshipGame</a> &gt; <a href="index.source.html" class="el_package">battleship</a> &gt; <span class="el_source">BoardGUI.java</span></div><h1>BoardGUI.java</h1><pre class="source lang-java linenums">package battleship;
+
+import javafx.application.Platform;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
+
+/** Read-only board: all game actions remain in the existing console. */
+<span class="nc" id="L16">public final class BoardGUI implements BoardView {</span>
+    private static final int CELL_SIZE = 38;
+<span class="nc" id="L18">    private final Rectangle[][] cells = new Rectangle[Game.BOARD_SIZE][Game.BOARD_SIZE];</span>
+<span class="nc" id="L19">    private final Label[][] symbols = new Label[Game.BOARD_SIZE][Game.BOARD_SIZE];</span>
+    private Stage stage;
+    private Label status;
+
+    @Override
+    public void update(IGame game) {
+        // Never send the mutable fleet or history to the JavaFX thread.
+<span class="nc" id="L26">        BoardSnapshot snapshot = BoardSnapshot.capture(game);</span>
+<span class="nc" id="L27">        Platform.runLater(() -&gt; render(snapshot));</span>
+<span class="nc" id="L28">    }</span>
+
+    @Override
+    public void open(IGame game) {
+<span class="nc bnc" id="L32" title="All 2 branches missed.">        BoardSnapshot snapshot = game == null ? null : BoardSnapshot.capture(game);</span>
+<span class="nc" id="L33">        Platform.runLater(() -&gt; {</span>
+<span class="nc" id="L34">            render(snapshot);</span>
+<span class="nc" id="L35">            stage.show();</span>
+<span class="nc" id="L36">            stage.toFront();</span>
+<span class="nc" id="L37">        });</span>
+<span class="nc" id="L38">    }</span>
+
+    private void createWindow() {
+<span class="nc" id="L41">        stage = new Stage();</span>
+<span class="nc" id="L42">        GridPane grid = new GridPane();</span>
+<span class="nc" id="L43">        grid.setAlignment(Pos.CENTER);</span>
+<span class="nc" id="L44">        grid.setHgap(2);</span>
+<span class="nc" id="L45">        grid.setVgap(2);</span>
+<span class="nc bnc" id="L46" title="All 2 branches missed.">        for (int col = 0; col &lt; Game.BOARD_SIZE; col++) {</span>
+<span class="nc" id="L47">            Label heading = new Label(String.valueOf(col + 1));</span>
+<span class="nc" id="L48">            heading.setMinWidth(CELL_SIZE);</span>
+<span class="nc" id="L49">            heading.setAlignment(Pos.CENTER);</span>
+<span class="nc" id="L50">            grid.add(heading, col + 1, 0);</span>
+        }
+<span class="nc bnc" id="L52" title="All 2 branches missed.">        for (int row = 0; row &lt; Game.BOARD_SIZE; row++) {</span>
+<span class="nc" id="L53">            grid.add(new Label(String.valueOf((char) ('A' + row))), 0, row + 1);</span>
+<span class="nc bnc" id="L54" title="All 2 branches missed.">            for (int col = 0; col &lt; Game.BOARD_SIZE; col++) {</span>
+<span class="nc" id="L55">                Rectangle cell = new Rectangle(CELL_SIZE, CELL_SIZE, Color.LIGHTSKYBLUE);</span>
+<span class="nc" id="L56">                cell.setStroke(Color.WHITE);</span>
+<span class="nc" id="L57">                Label symbol = new Label();</span>
+<span class="nc" id="L58">                symbol.setStyle(&quot;-fx-font-weight: bold; -fx-font-size: 18px;&quot;);</span>
+<span class="nc" id="L59">                cells[row][col] = cell;</span>
+<span class="nc" id="L60">                symbols[row][col] = symbol;</span>
+<span class="nc" id="L61">                grid.add(new StackPane(cell, symbol), col + 1, row + 1);</span>
+            }
+        }
+<span class="nc" id="L64">        Label title = new Label(&quot;Tabuleiro da Batalha Naval&quot;);</span>
+<span class="nc" id="L65">        title.setStyle(&quot;-fx-font-size: 22px; -fx-font-weight: bold;&quot;);</span>
+<span class="nc" id="L66">        status = new Label();</span>
+<span class="nc" id="L67">        Label legend = new Label(&quot;■ Navio (azul-escuro)   × Acerto (vermelho)\n&quot;</span>
+                + &quot;○ Água atingida (cinzento)   · Água (azul-claro)&quot;);
+<span class="nc" id="L69">        Label instructions = new Label(&quot;Usa os comandos na consola. Para reabrir esta janela: gui&quot;);</span>
+<span class="nc" id="L70">        VBox root = new VBox(12, title, status, grid, legend, instructions);</span>
+<span class="nc" id="L71">        root.setAlignment(Pos.CENTER);</span>
+<span class="nc" id="L72">        root.setPadding(new Insets(20));</span>
+<span class="nc" id="L73">        stage.setTitle(&quot;Batalha Naval — Simulação&quot;);</span>
+<span class="nc" id="L74">        stage.setScene(new Scene(root));</span>
+<span class="nc" id="L75">        stage.setResizable(false);</span>
+<span class="nc" id="L76">    }</span>
+
+    private void render(BoardSnapshot snapshot) {
+<span class="nc bnc" id="L79" title="All 2 branches missed.">        if (stage == null) createWindow();</span>
+<span class="nc bnc" id="L80" title="All 2 branches missed.">        status.setText(snapshot == null ? &quot;Começa na consola com gerafrota ou lefrota.&quot;</span>
+<span class="nc" id="L81">                : &quot;Rajadas: &quot; + snapshot.moves() + &quot;  |  Navios restantes: &quot; + snapshot.remainingShips()</span>
+<span class="nc bnc" id="L82" title="All 2 branches missed.">                + (snapshot.remainingShips() == 0 ? &quot;  |  Partida terminada&quot; : &quot;&quot;));</span>
+<span class="nc bnc" id="L83" title="All 2 branches missed.">        for (int row = 0; row &lt; Game.BOARD_SIZE; row++) {</span>
+<span class="nc bnc" id="L84" title="All 2 branches missed.">            for (int col = 0; col &lt; Game.BOARD_SIZE; col++) {</span>
+<span class="nc bnc" id="L85" title="All 2 branches missed.">                BoardSnapshot.Cell state = snapshot == null ? BoardSnapshot.Cell.WATER : snapshot.cell(row, col);</span>
+<span class="nc bnc" id="L86" title="All 4 branches missed.">                cells[row][col].setFill(switch (state) {</span>
+<span class="nc" id="L87">                    case WATER -&gt; Color.LIGHTSKYBLUE;</span>
+<span class="nc" id="L88">                    case SHIP -&gt; Color.STEELBLUE;</span>
+<span class="nc" id="L89">                    case HIT -&gt; Color.CRIMSON;</span>
+<span class="nc" id="L90">                    case MISS -&gt; Color.LIGHTGRAY;</span>
+                });
+<span class="nc bnc" id="L92" title="All 4 branches missed.">                symbols[row][col].setText(switch (state) {</span>
+<span class="nc" id="L93">                    case WATER -&gt; &quot;·&quot;;</span>
+<span class="nc" id="L94">                    case SHIP -&gt; &quot;■&quot;;</span>
+<span class="nc" id="L95">                    case HIT -&gt; &quot;×&quot;;</span>
+<span class="nc" id="L96">                    case MISS -&gt; &quot;○&quot;;</span>
+                });
+<span class="nc" id="L98">                symbols[row][col].setTextFill(state == BoardSnapshot.Cell.HIT</span>
+<span class="nc bnc" id="L99" title="All 4 branches missed.">                        || state == BoardSnapshot.Cell.SHIP ? Color.WHITE : Color.BLACK);</span>
+            }
+        }
+<span class="nc" id="L102">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

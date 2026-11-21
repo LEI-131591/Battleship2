@@ -47,14 +47,7 @@ public class CallbackClient {
 	public boolean sendShots(GameSession session, List<IPosition> aiShots) {
 
 		// ── 1. Build m2a request body ────────────────────────────────────────
-		ShotRequest dto = new ShotRequest();
-		dto.shots = new ArrayList<>();
-		for (IPosition pos : aiShots) {
-			ShotPosition sp = new ShotPosition();
-			sp.row    = String.valueOf(pos.getClassicRow());
-			sp.column = pos.getClassicColumn();
-			dto.shots.add(sp);
-		}
+		ShotRequest dto = buildShotRequest(aiShots);
 
 		String url  = session.getCallbackUrl() + "/game/" + session.getGameId() + "/shots";
 		String body;
@@ -107,6 +100,18 @@ public class CallbackClient {
 		}
 
 		return true;
+	}
+
+	private static ShotRequest buildShotRequest(List<IPosition> aiShots) {
+		ShotRequest dto = new ShotRequest();
+		dto.shots = new ArrayList<>();
+		for (IPosition pos : aiShots) {
+			ShotPosition sp = new ShotPosition();
+			sp.row    = String.valueOf(pos.getClassicRow());
+			sp.column = pos.getClassicColumn();
+			dto.shots.add(sp);
+		}
+		return dto;
 	}
 
 	/**

@@ -30,6 +30,8 @@ public class CallbackClient {
 	private final HttpClient   http;
 	private final ObjectMapper mapper;
 
+	private static final Duration REQUEST_TIMEOUT = Duration.ofSeconds(10);
+
 	public CallbackClient() {
 		this.http   = HttpClient.newBuilder()
 				.connectTimeout(Duration.ofSeconds(5))
@@ -47,14 +49,7 @@ public class CallbackClient {
 	public boolean sendShots(GameSession session, List<IPosition> aiShots) {
 
 		// ── 1. Build m2a request body ────────────────────────────────────────
-		ShotRequest dto = new ShotRequest();
-		dto.shots = new ArrayList<>();
-		for (IPosition pos : aiShots) {
-			ShotPosition sp = new ShotPosition();
-			sp.row    = String.valueOf(pos.getClassicRow());
-			sp.column = pos.getClassicColumn();
-			dto.shots.add(sp);
-		}
+		ShotRequest dto = buildShotRequest(aiShots);
 
 		String url  = session.getCallbackUrl() + "/game/" + session.getGameId() + "/shots";
 		String body;
@@ -69,7 +64,7 @@ public class CallbackClient {
 		HttpRequest request = HttpRequest.newBuilder()
 				.uri(URI.create(url))
 				.header("Content-Type", "application/json")
-				.timeout(Duration.ofSeconds(10))
+				.timeout(REQUEST_TIMEOUT)
 				.POST(HttpRequest.BodyPublishers.ofString(body))
 				.build();
 
@@ -81,26 +76,27 @@ public class CallbackClient {
 			return false;
 		}
 
-		if (response.statusCode() < 200 || response.statusCode() >= 300) {
+		int statusCode = response.statusCode();
+		if (statusCode < 200 || statusCode >= 300) {
 			System.err.printf("[Callback] Student returned HTTP %d: %s%n",
-					response.statusCode(), response.body());
+					statusCode, response.body());
 			return false;
 		}
 
 		// ── 3. Parse m2b response ────────────────────────────────────────────
-		ShotResponse m2b;
+		ShotResponse shotResponse;
 		try {
-			m2b = mapper.readValue(response.body(), ShotResponse.class);
+			shotResponse = mapper.readValue(response.body(), ShotResponse.class);
 		} catch (IOException e) {
 			System.err.println("[Callback] Failed to parse student m2b response: " + e.getMessage());
 			return false;
 		}
 
 		// ── 4. Record the AI's move in the game (for strategy state tracking) ─
-		recordAiMove(session.getGame(), aiShots, m2b);
+		recordAiMove(session.getGame(), aiShots, shotResponse.results);
 
 		// ── 5. Check if AI won ────────────────────────────────────────────────
-		if (m2b.shipsRemaining == 0 || "GAME_OVER".equals(m2b.gameStatus)) {
+		if (shotResponse.shipsRemaining == 0 || "GAME_OVER".equals(shotResponse.gameStatus)) {
 			session.markAiWins();
 			System.out.printf("[%s] GAME OVER — AI wins against '%s'!%n",
 					session.getGameId(), session.getPlayerName());
@@ -109,20 +105,32 @@ public class CallbackClient {
 		return true;
 	}
 
+	private static ShotRequest buildShotRequest(List<IPosition> aiShots) {
+		ShotRequest dto = new ShotRequest();
+		dto.shots = new ArrayList<>();
+		for (IPosition pos : aiShots) {
+			ShotPosition sp = new ShotPosition();
+			sp.row    = String.valueOf(pos.getClassicRow());
+			sp.column = pos.getClassicColumn();
+			dto.shots.add(sp);
+		}
+		return dto;
+	}
+
 	/**
 	 * Records the AI's shots and the student's reported results into the Game object.
 	 * This allows AiShotStrategy to see past hits when computing the next move.
 	 */
-	private void recordAiMove(IGame game, List<IPosition> shots, ShotResponse m2b) {
-		if (m2b.results == null) return;
+	private void recordAiMove(IGame game, List<IPosition> shots, List<ShotResult> results) {
+		if (results == null) return;
 
 		List<IGame.ShotResult> shotResults = new ArrayList<>();
-		for (int i = 0; i < shots.size() && i < m2b.results.size(); i++) {
-			ShotResult r = m2b.results.get(i);
+		for (int i = 0; i < shots.size() && i < results.size(); i++) {
+			ShotResult r = results.get(i);
 
-			boolean valid    = !"INVALID".equals(r.outcome);
+			boolean valid = !"INVALID".equals(r.outcome);
 			boolean repeated = "REPEATED".equals(r.outcome);
-			boolean sunk     = "SUNK".equals(r.outcome);
+			boolean sunk = "SUNK".equals(r.outcome);
 
 			// We don't have the actual IShip reference for the student's fleet,
 			// so we pass null for ship — the strategy uses outcome strings instead.

@@ -93,7 +93,7 @@ public class CallbackClient {
 		}
 
 		// ── 4. Record the AI's move in the game (for strategy state tracking) ─
-		recordAiMove(session.getGame(), aiShots, shotResponse);
+		recordAiMove(session.getGame(), aiShots, shotResponse.results);
 
 		// ── 5. Check if AI won ────────────────────────────────────────────────
 		if (shotResponse.shipsRemaining == 0 || "GAME_OVER".equals(shotResponse.gameStatus)) {
@@ -121,16 +121,16 @@ public class CallbackClient {
 	 * Records the AI's shots and the student's reported results into the Game object.
 	 * This allows AiShotStrategy to see past hits when computing the next move.
 	 */
-	private void recordAiMove(IGame game, List<IPosition> shots, ShotResponse m2b) {
-		if (m2b.results == null) return;
+	private void recordAiMove(IGame game, List<IPosition> shots, List<ShotResult> results) {
+		if (results == null) return;
 
 		List<IGame.ShotResult> shotResults = new ArrayList<>();
-		for (int i = 0; i < shots.size() && i < m2b.results.size(); i++) {
-			ShotResult r = m2b.results.get(i);
+		for (int i = 0; i < shots.size() && i < results.size(); i++) {
+			ShotResult r = results.get(i);
 
-			boolean valid    = !"INVALID".equals(r.outcome);
+			boolean valid = !"INVALID".equals(r.outcome);
 			boolean repeated = "REPEATED".equals(r.outcome);
-			boolean sunk     = "SUNK".equals(r.outcome);
+			boolean sunk = "SUNK".equals(r.outcome);
 
 			// We don't have the actual IShip reference for the student's fleet,
 			// so we pass null for ship — the strategy uses outcome strings instead.

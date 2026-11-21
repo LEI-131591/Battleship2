@@ -2,7 +2,7 @@ Vídeo demonstração (Funcionalidades + LLM): https://www.youtube.com/watch?v=z
 
 # ⚓ Battleship 2.0
 
-![Build Status](https://img.shields.io/badge/build-passing-brightgreen)
+[![Java CI with Maven](https://github.com/LEI-131591/Battleship2/actions/workflows/maven.yml/badge.svg?branch=master)](https://github.com/LEI-131591/Battleship2/actions/workflows/maven.yml)
 ![Java Version](https://img.shields.io/badge/Java-17%2B-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 

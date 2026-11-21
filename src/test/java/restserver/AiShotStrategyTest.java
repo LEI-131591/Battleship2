@@ -4,6 +4,7 @@ import battleship.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -13,6 +14,43 @@ import static org.junit.jupiter.api.Assertions.*;
 class AiShotStrategyTest {
 
     private final AiShotStrategy strategy = new AiShotStrategy();
+
+
+    @Test
+    @DisplayName("Should use safety fallback when hunt pool has no available positions")
+    void shouldUseSafetyFallbackWhenHuntPoolIsEmpty() {
+        Game game = new Game(new Fleet());
+
+        List<IPosition> previousShots = new ArrayList<>();
+        List<IGame.ShotResult> previousResults = new ArrayList<>();
+
+        // Mark every position as already shot, except three odd-parity cells.
+        for (int row = 0; row < Game.BOARD_SIZE; row++) {
+            for (int col = 0; col < Game.BOARD_SIZE; col++) {
+                if (!(row == 0 && (col == 1 || col == 3 || col == 5))) {
+                    previousShots.add(new Position(row, col));
+                    previousResults.add(
+                            new IGame.ShotResult(false, false, null, false)
+                    );
+                }
+            }
+        }
+
+        game.getAlienMoves().add(
+                new Move(1, previousShots, previousResults)
+        );
+
+        AiShotStrategy strategy = new AiShotStrategy();
+
+        List<IPosition> shots = strategy.computeShots(game);
+
+        assertEquals(3, shots.size());
+
+        assertTrue(shots.contains(new Position(0, 1)));
+        assertTrue(shots.contains(new Position(0, 3)));
+        assertTrue(shots.contains(new Position(0, 5)));
+    }
+
 
     @Test
     @DisplayName("Deve devolver exatamente três posições válidas e distintas")

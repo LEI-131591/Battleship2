@@ -30,6 +30,8 @@ public class CallbackClient {
 	private final HttpClient   http;
 	private final ObjectMapper mapper;
 
+	private static final Duration REQUEST_TIMEOUT = Duration.ofSeconds(10);
+
 	public CallbackClient() {
 		this.http   = HttpClient.newBuilder()
 				.connectTimeout(Duration.ofSeconds(5))
@@ -62,7 +64,7 @@ public class CallbackClient {
 		HttpRequest request = HttpRequest.newBuilder()
 				.uri(URI.create(url))
 				.header("Content-Type", "application/json")
-				.timeout(Duration.ofSeconds(10))
+				.timeout(REQUEST_TIMEOUT)
 				.POST(HttpRequest.BodyPublishers.ofString(body))
 				.build();
 

@@ -165,10 +165,10 @@ public class GameController {
 
 		for (IPosition pos : positions) {
 			boolean repeatedInTurn = alreadyThisTurn.contains(pos);
-			IGame.ShotResult sr = game.fireSingleShot(pos, repeatedInTurn);
+			IGame.ShotResult shotOutcome = game.fireSingleShot(pos, repeatedInTurn);
 			alreadyThisTurn.add(pos);
 
-			results.add(toShotResultDto(pos, sr));
+			results.add(toShotResultDto(pos, shotOutcome));
 		}
 
 		ShotResponse response  = new ShotResponse();
@@ -179,23 +179,23 @@ public class GameController {
 		return response;
 	}
 
-	private ShotResult toShotResultDto(IPosition pos, IGame.ShotResult sr) {
+	private ShotResult toShotResultDto(IPosition pos, IGame.ShotResult shotOutcome) {
 		ShotResult dto  = new ShotResult();
 		dto.row         = String.valueOf(pos.getClassicRow());
 		dto.column      = pos.getClassicColumn();
 
-		if (!sr.valid()) {
+		if (!shotOutcome.valid()) {
 			dto.outcome = "INVALID";
-		} else if (sr.repeated()) {
+		} else if (shotOutcome.repeated()) {
 			dto.outcome = "REPEATED";
-		} else if (sr.ship() == null) {
+		} else if (shotOutcome.ship() == null) {
 			dto.outcome = "MISS";
-		} else if (sr.sunk()) {
+		} else if (shotOutcome.sunk()) {
 			dto.outcome  = "SUNK";
-			dto.shipType = sr.ship().getCategory();
+			dto.shipType = shotOutcome.ship().getCategory();
 		} else {
 			dto.outcome  = "HIT";
-			dto.shipType = sr.ship().getCategory();
+			dto.shipType = shotOutcome.ship().getCategory();
 		}
 		return dto;
 	}

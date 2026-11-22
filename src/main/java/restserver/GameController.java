@@ -162,24 +162,7 @@ public class GameController {
 			IGame.ShotResult sr = game.fireSingleShot(pos, repeatedInTurn);
 			alreadyThisTurn.add(pos);
 
-			ShotResult dto  = new ShotResult();
-			dto.row         = String.valueOf(pos.getClassicRow());
-			dto.column      = pos.getClassicColumn();
-
-			if (!sr.valid()) {
-				dto.outcome = "INVALID";
-			} else if (sr.repeated()) {
-				dto.outcome = "REPEATED";
-			} else if (sr.ship() == null) {
-				dto.outcome = "MISS";
-			} else if (sr.sunk()) {
-				dto.outcome  = "SUNK";
-				dto.shipType = sr.ship().getCategory();
-			} else {
-				dto.outcome  = "HIT";
-				dto.shipType = sr.ship().getCategory();
-			}
-			results.add(dto);
+			results.add(toShotResultDto(pos, sr));
 		}
 
 		ShotResponse response  = new ShotResponse();
@@ -188,6 +171,27 @@ public class GameController {
 		response.gameStatus    = "ONGOING";
 		response.winner        = null;
 		return response;
+	}
+
+	private ShotResult toShotResultDto(IPosition pos, IGame.ShotResult sr) {
+		ShotResult dto  = new ShotResult();
+		dto.row         = String.valueOf(pos.getClassicRow());
+		dto.column      = pos.getClassicColumn();
+
+		if (!sr.valid()) {
+			dto.outcome = "INVALID";
+		} else if (sr.repeated()) {
+			dto.outcome = "REPEATED";
+		} else if (sr.ship() == null) {
+			dto.outcome = "MISS";
+		} else if (sr.sunk()) {
+			dto.outcome  = "SUNK";
+			dto.shipType = sr.ship().getCategory();
+		} else {
+			dto.outcome  = "HIT";
+			dto.shipType = sr.ship().getCategory();
+		}
+		return dto;
 	}
 
 	/** Convenience helper to build a JSON error response. */

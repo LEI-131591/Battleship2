@@ -12,6 +12,11 @@
 | `CallbackClient::sendShots`, validação HTTP | Consulta repetida do mesmo estado HTTP | Introduce Variable | 131056 |
 | `CallbackClient::sendShots`, resposta desserializada | Nome de variável pouco descritivo (`m2b`) | Rename | 131056 |
 | `CallbackClient::recordAiMove` | Acoplamento ao DTO de resposta inteiro quando o método usa apenas os resultados | Change Signature | 131056 |
+| `GameController::evaluateShots`, construção do resultado individual | Método longo com mapeamento do resultado de cada tiro misturado com a iteração | Extract Method | 124708 |
+| `GameController`, estados da partida e do registo | Literais de texto sem nome para estados do protocolo REST | Introduce Constant | 124708 |
+| `GameController::receiveShots`, conversão de coordenadas | Expressão encadeada para normalizar a linha clássica do tiro | Introduce Variable | 124708 |
+| `GameController::toShotResultDto`, resultado do disparo | Nome de variável abreviado e pouco descritivo (`sr`) | Rename | 124708 |
+| `GameController::evaluateShots` | Parâmetro `session` não utilizado na avaliação dos tiros | Change Signature | 124708 |
 
 A atribuição refere-se às alterações de LEI-129823. A equipa pode acrescentar as oportunidades dos restantes membros à tabela.
 

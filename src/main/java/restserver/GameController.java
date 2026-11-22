@@ -19,6 +19,11 @@ import java.util.List;
 @RestController
 public class GameController {
 
+	private static final String STATUS_REGISTERED = "REGISTERED";
+	private static final String STATUS_ONGOING = "ONGOING";
+	private static final String STATUS_GAME_OVER = "GAME_OVER";
+	private static final String WINNER_STUDENT = "STUDENT_WINS";
+
 	private final GameRegistry registry;
 	private final CallbackClient callbackClient;
 	private final AiShotStrategy aiStrategy;
@@ -60,7 +65,7 @@ public class GameController {
 
 		RegistrationResponse response = new RegistrationResponse();
 		response.gameId       = session.getGameId();
-		response.status       = "REGISTERED";
+		response.status       = STATUS_REGISTERED;
 		response.shotsPerTurn = session.getShotsPerTurn();
 		response.message      = "Welcome, " + request.playerName + "! Game ready. You shoot first.";
 
@@ -112,18 +117,19 @@ public class GameController {
 				return error(HttpStatus.BAD_REQUEST,
 						"Invalid position: row='" + sp.row + "' column=" + sp.column);
 			}
-			positions.add(new Position(sp.row.toUpperCase().charAt(0), sp.column));
+			char classicRow = sp.row.toUpperCase().charAt(0);
+			positions.add(new Position(classicRow, sp.column));
 		}
 
 		// ── 4. Fire student's shots at the AI's fleet (m1b logic) ────────────
 		IGame game = session.getGame();
-		ShotResponse m1bResponse = evaluateShots(positions, game, session);
+		ShotResponse m1bResponse = evaluateShots(positions, game);
 
 		// ── 5. Check if student won (all AI ships sunk) ──────────────────────
 		if (game.getRemainingShips() == 0) {
 			session.markStudentWins();
-			m1bResponse.gameStatus = "GAME_OVER";
-			m1bResponse.winner     = "STUDENT_WINS";
+			m1bResponse.gameStatus = STATUS_GAME_OVER;
+			m1bResponse.winner     = WINNER_STUDENT;
 			System.out.printf("[%s] GAME OVER — student '%s' wins!%n",
 					gameId, session.getPlayerName());
 			return ResponseEntity.ok(m1bResponse);
@@ -152,42 +158,45 @@ public class GameController {
 	 * Delegates to the existing Game.fireSingleShot() so all existing logic is reused.
 	 */
 	private ShotResponse evaluateShots(List<IPosition> positions,
-									   IGame game,
-									   GameSession session) {
+									   IGame game) {
 		List<ShotResult> results = new ArrayList<>();
 		List<IPosition> alreadyThisTurn = new ArrayList<>();
 
 		for (IPosition pos : positions) {
 			boolean repeatedInTurn = alreadyThisTurn.contains(pos);
-			IGame.ShotResult sr = game.fireSingleShot(pos, repeatedInTurn);
+			IGame.ShotResult shotOutcome = game.fireSingleShot(pos, repeatedInTurn);
 			alreadyThisTurn.add(pos);
 
-			ShotResult dto  = new ShotResult();
-			dto.row         = String.valueOf(pos.getClassicRow());
-			dto.column      = pos.getClassicColumn();
-
-			if (!sr.valid()) {
-				dto.outcome = "INVALID";
-			} else if (sr.repeated()) {
-				dto.outcome = "REPEATED";
-			} else if (sr.ship() == null) {
-				dto.outcome = "MISS";
-			} else if (sr.sunk()) {
-				dto.outcome  = "SUNK";
-				dto.shipType = sr.ship().getCategory();
-			} else {
-				dto.outcome  = "HIT";
-				dto.shipType = sr.ship().getCategory();
-			}
-			results.add(dto);
+			results.add(toShotResultDto(pos, shotOutcome));
 		}
 
 		ShotResponse response  = new ShotResponse();
 		response.results       = results;
 		response.shipsRemaining = game.getRemainingShips();
-		response.gameStatus    = "ONGOING";
+		response.gameStatus    = STATUS_ONGOING;
 		response.winner        = null;
 		return response;
+	}
+
+	private ShotResult toShotResultDto(IPosition pos, IGame.ShotResult shotOutcome) {
+		ShotResult dto  = new ShotResult();
+		dto.row         = String.valueOf(pos.getClassicRow());
+		dto.column      = pos.getClassicColumn();
+
+		if (!shotOutcome.valid()) {
+			dto.outcome = "INVALID";
+		} else if (shotOutcome.repeated()) {
+			dto.outcome = "REPEATED";
+		} else if (shotOutcome.ship() == null) {
+			dto.outcome = "MISS";
+		} else if (shotOutcome.sunk()) {
+			dto.outcome  = "SUNK";
+			dto.shipType = shotOutcome.ship().getCategory();
+		} else {
+			dto.outcome  = "HIT";
+			dto.shipType = shotOutcome.ship().getCategory();
+		}
+		return dto;
 	}
 
 	/** Convenience helper to build a JSON error response. */

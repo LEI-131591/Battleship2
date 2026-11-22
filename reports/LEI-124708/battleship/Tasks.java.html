@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Tasks.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">LEI-124708 - Ficha 4</a> &gt; <a href="index.source.html" class="el_package">battleship</a> &gt; <span class="el_source">Tasks.java</span></div><h1>Tasks.java</h1><pre class="source lang-java linenums">package battleship;
+
+import java.io.IOException;
+import java.util.Scanner;
+import java.util.Locale;
+
+import org.apache.commons.lang3.time.StopWatch;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
+
+import java.nio.file.Path;
+
+/**
+ * The type Tasks.
+ */
+<span class="fc" id="L17">public class Tasks {</span>
+	/**
+	 * The constant LOGGER.
+	 */
+<span class="fc" id="L21">	private static final Logger LOGGER = LogManager.getLogger();</span>
+
+	/**
+	 * The constant GOODBYE_MESSAGE.
+	 */
+	private static final String GOODBYE_MESSAGE = &quot;Bons ventos!&quot;;
+
+	/**
+	 * Strings to be used by the user
+	 */
+	private static final String AJUDA = &quot;ajuda&quot;;
+	private static final String GERAFROTA = &quot;gerafrota&quot;;
+	private static final String LEFROTA = &quot;lefrota&quot;;
+	private static final String DESISTIR = &quot;desisto&quot;;
+	private static final String RAJADA = &quot;rajada&quot;;
+	private static final String TIROS = &quot;tiros&quot;;
+	private static final String MAPA = &quot;mapa&quot;;
+	private static final String STATUS = &quot;estado&quot;;
+	private static final String SIMULA = &quot;simula&quot;;
+	private static final String EXPORTAR = &quot;exportar&quot;;
+
+	/**
+	 * This task also tests the fighting element of a round of three shots
+	 */
+	public static void menu() {
+<span class="fc" id="L46">		menu(BoardView.NONE);</span>
+<span class="fc" id="L47">	}</span>
+
+	/** Runs the existing simulation with an optional read-only board view. */
+	public static void menu(BoardView boardView) {
+
+<span class="fc" id="L52">		Path databaseFile = Path.of(&quot;data&quot;, &quot;battleship.db&quot;);</span>
+
+<span class="fc" id="L54">		SqliteMoveRepository repository =</span>
+				new SqliteMoveRepository(databaseFile);
+
+<span class="fc" id="L57">		System.out.println(</span>
+<span class="fc" id="L58">				&quot;Base de dados: &quot; + databaseFile.toAbsolutePath().normalize()</span>
+		);
+
+<span class="fc" id="L61">		IFleet myFleet = null;</span>
+<span class="fc" id="L62">		IGame game = null;</span>
+<span class="fc" id="L63">		StopWatch moveTimer = new StopWatch();</span>
+<span class="fc" id="L64">		menuHelp();</span>
+
+<span class="fc" id="L66">		System.out.print(&quot;&gt; &quot;);</span>
+<span class="fc" id="L67">		Scanner in = new Scanner(System.in);</span>
+<span class="fc" id="L68">		String command = in.next();</span>
+<span class="fc bfc" id="L69" title="All 2 branches covered.">		while (!command.equals(DESISTIR)) {</span>
+
+<span class="fc bfc" id="L71" title="All 13 branches covered.">			switch (command) {</span>
+				case GERAFROTA:
+<span class="fc" id="L73">					moveTimer.reset();</span>
+<span class="fc" id="L74">					myFleet = Fleet.createRandom();</span>
+<span class="fc" id="L75">					game = new Game(myFleet, repository);</span>
+<span class="fc" id="L76">					game.printMyBoard(false, true);</span>
+<span class="fc" id="L77">					boardView.update(game);</span>
+<span class="fc" id="L78">					break;</span>
+				case LEFROTA:
+<span class="fc" id="L80">					moveTimer.reset();</span>
+<span class="fc" id="L81">					myFleet = buildFleet(in);</span>
+<span class="fc" id="L82">					game = new Game(myFleet, repository);</span>
+<span class="fc" id="L83">					game.printMyBoard(false, true);</span>
+<span class="fc" id="L84">					boardView.update(game);</span>
+<span class="fc" id="L85">					break;</span>
+				case STATUS:
+<span class="fc bfc" id="L87" title="All 2 branches covered.">					if (myFleet != null)</span>
+<span class="fc" id="L88">						myFleet.printStatus();</span>
+					break;
+				case MAPA:
+<span class="fc bfc" id="L91" title="All 2 branches covered.">					if (myFleet != null)</span>
+<span class="fc" id="L92">						game.printMyBoard(false, true);</span>
+					break;
+				case RAJADA:
+<span class="fc bfc" id="L95" title="All 2 branches covered.">					if (game != null) {</span>
+<span class="fc bfc" id="L96" title="All 2 branches covered.">						if (game.getRemainingShips() == 0) {</span>
+<span class="fc" id="L97">							System.out.println(&quot;A partida terminou. Usa 'exportar' ou inicia uma nova frota.&quot;);</span>
+<span class="fc" id="L98">							break;</span>
+						}
+<span class="fc" id="L100">						game.readEnemyFire(in);</span>
+<span class="fc" id="L101">						printMoveTime(moveTimer, game);</span>
+<span class="fc" id="L102">						myFleet.printStatus();</span>
+<span class="fc" id="L103">						game.printMyBoard(true, false);</span>
+<span class="fc" id="L104">						boardView.update(game);</span>
+
+<span class="fc bfc" id="L106" title="All 2 branches covered.">						if (game.getRemainingShips() == 0) {</span>
+<span class="fc" id="L107">							game.over();</span>
+<span class="fc" id="L108">							System.out.println(&quot;Usa 'exportar' para guardar as rajadas desta partida.&quot;);</span>
+						}
+					}
+					break;
+				case SIMULA:
+<span class="fc bfc" id="L113" title="All 2 branches covered.">					if (game != null) {</span>
+<span class="fc bfc" id="L114" title="All 2 branches covered.">						if (game.getRemainingShips() == 0) {</span>
+<span class="fc" id="L115">							System.out.println(&quot;A partida terminou. Usa 'exportar' ou inicia uma nova frota.&quot;);</span>
+<span class="fc" id="L116">							break;</span>
+						}
+<span class="fc bfc" id="L118" title="All 2 branches covered.">						while (game.getRemainingShips() &gt; 0){</span>
+<span class="fc" id="L119">							moveTimer.reset();</span>
+<span class="fc" id="L120">							moveTimer.start();</span>
+<span class="fc" id="L121">							game.randomEnemyFire();</span>
+<span class="fc" id="L122">							printMoveTime(moveTimer, game);</span>
+<span class="fc" id="L123">							myFleet.printStatus();</span>
+<span class="fc" id="L124">							game.printMyBoard(true, false);</span>
+<span class="fc" id="L125">							boardView.update(game);</span>
+							try {
+<span class="nc" id="L127">								Thread.sleep(3000);</span>
+<span class="fc" id="L128">							} catch (InterruptedException e) {</span>
+<span class="fc" id="L129">								Thread.currentThread().interrupt(); // Best practice: restore interrupt status</span>
+<span class="pc" id="L130">							}</span>
+						}
+
+<span class="pc bpc" id="L133" title="1 of 2 branches missed.">						if (game.getRemainingShips() == 0) {</span>
+<span class="fc" id="L134">							game.over();</span>
+<span class="fc" id="L135">							System.out.println(&quot;Usa 'exportar' para guardar as rajadas desta partida.&quot;);</span>
+						}
+					}
+					break;
+				case TIROS:
+<span class="fc bfc" id="L140" title="All 2 branches covered.">					if (game != null)</span>
+<span class="fc" id="L141">						game.printMyBoard(true, true);</span>
+					break;
+				case &quot;gui&quot;:
+<span class="fc bfc" id="L144" title="All 2 branches covered.">					if (boardView == BoardView.NONE)</span>
+<span class="fc" id="L145">						System.out.println(&quot;Inicia o modo gráfico com mvn javafx:run.&quot;);</span>
+					else
+<span class="fc" id="L147">						boardView.open(game);</span>
+<span class="fc" id="L148">					break;</span>
+				case EXPORTAR:
+<span class="fc bfc" id="L150" title="All 4 branches covered.">					if (game == null || game.getAlienMoves().isEmpty()) {</span>
+<span class="fc" id="L151">						System.out.println(&quot;Ainda não existem rajadas para exportar.&quot;);</span>
+<span class="fc" id="L152">						break;</span>
+					}
+					try {
+<span class="fc" id="L155">						Path file = MoveCsvExporter.export(game.getAlienMoves(), Path.of(&quot;data&quot;, &quot;exports&quot;));</span>
+<span class="fc" id="L156">						System.out.println(&quot;Rajadas exportadas para: &quot; + file.toAbsolutePath().normalize());</span>
+<span class="fc" id="L157">					} catch (IOException | IllegalArgumentException e) {</span>
+<span class="fc" id="L158">						System.err.println(&quot;Não foi possível exportar as rajadas: &quot; + e.getMessage());</span>
+<span class="fc" id="L159">					}</span>
+<span class="fc" id="L160">					break;</span>
+				case AJUDA:
+<span class="fc" id="L162">					menuHelp();</span>
+<span class="fc" id="L163">					break;</span>
+				case &quot;jogos&quot;: {
+<span class="fc" id="L165">					var savedGames = repository.findGames();</span>
+
+<span class="fc bfc" id="L167" title="All 2 branches covered.">					if (savedGames.isEmpty()) {</span>
+<span class="fc" id="L168">						System.out.println(&quot;Ainda não existem jogos guardados.&quot;);</span>
+					} else {
+<span class="fc bfc" id="L170" title="All 2 branches covered.">						for (var savedGame : savedGames) {</span>
+<span class="fc" id="L171">							System.out.printf(</span>
+									&quot;ID: %s | Início: %s%n&quot;,
+<span class="fc" id="L173">									savedGame.id(),</span>
+<span class="fc" id="L174">									savedGame.startedAt()</span>
+							);
+<span class="fc" id="L176">						}</span>
+					}
+
+<span class="fc" id="L179">					break;</span>
+				}
+				case &quot;historico&quot;: {
+<span class="fc" id="L182">					String requestedGameId = in.nextLine().trim();</span>
+
+<span class="fc bfc" id="L184" title="All 2 branches covered.">					if (requestedGameId.isEmpty()) {</span>
+<span class="fc" id="L185">						System.out.println(&quot;Utilização: historico ID_DO_JOGO&quot;);</span>
+<span class="fc" id="L186">						break;</span>
+					}
+
+<span class="fc" id="L189">					var history = repository.findHistory(requestedGameId);</span>
+
+<span class="fc bfc" id="L191" title="All 2 branches covered.">					if (history.isEmpty()) {</span>
+<span class="fc" id="L192">						System.out.println(</span>
+								&quot;Não existem jogadas para esse ID. Usa 'jogos' para verificar os IDs.&quot;
+						);
+					} else {
+<span class="fc bfc" id="L196" title="All 2 branches covered.">						for (var shot : history) {</span>
+<span class="fc bfc" id="L197" title="All 2 branches covered.">							String shipInfo = shot.shipType() == null</span>
+<span class="fc" id="L198">									? &quot;&quot;</span>
+<span class="fc" id="L199">									: &quot; — &quot; + shot.shipType();</span>
+
+<span class="fc" id="L201">							System.out.printf(</span>
+									&quot;Jogada %d | Tiro %d | %s%d | %s%s%n&quot;,
+<span class="fc" id="L203">									shot.moveNumber(),</span>
+<span class="fc" id="L204">									shot.shotOrder(),</span>
+<span class="fc" id="L205">									shot.row(),</span>
+<span class="fc" id="L206">									shot.column(),</span>
+<span class="fc" id="L207">									shot.outcome(),</span>
+									shipInfo
+							);
+<span class="fc" id="L210">						}</span>
+					}
+
+<span class="fc" id="L213">					break;</span>
+				}
+				default:
+<span class="fc" id="L216">					System.out.println(&quot;Que comando é esse??? Repete ...&quot;);</span>
+			}
+
+<span class="fc bfc" id="L219" title="All 6 branches covered.">			if (game != null &amp;&amp; game.getRemainingShips() &gt; 0 &amp;&amp; !moveTimer.isStarted()) {</span>
+<span class="fc" id="L220">				moveTimer.reset();</span>
+<span class="fc" id="L221">				moveTimer.start();</span>
+			}
+<span class="fc" id="L223">			System.out.print(&quot;&gt; &quot;);</span>
+<span class="fc" id="L224">			command = in.next();</span>
+		}
+<span class="fc" id="L226">		System.out.println(GOODBYE_MESSAGE);</span>
+<span class="fc" id="L227">	}</span>
+
+	/**
+	 * Apresenta a duração de uma rajada concluída, antes de mostrar o tabuleiro.
+	 * A medição termina depois da leitura/geração e do processamento dos tiros.
+	 * A duração é apresentada em segundos, com três casas decimais.
+	 *
+	 * @param moveTimer cronómetro em execução para a rajada concluída
+	 * @param game partida cujo histórico contém a rajada acabada de processar
+	 */
+	private static void printMoveTime(StopWatch moveTimer, IGame game) {
+<span class="fc" id="L238">		moveTimer.stop();</span>
+<span class="fc" id="L239">		int moveNumber = game.getAlienMoves().get(game.getAlienMoves().size() - 1).getNumber();</span>
+<span class="fc" id="L240">		System.out.printf(Locale.ROOT, &quot;Tempo da jogada %d: %.3f s%n&quot;,</span>
+<span class="fc" id="L241">				moveNumber, moveTimer.getDuration().toMillis() / 1000.0);</span>
+<span class="fc" id="L242">	}</span>
+
+	/**
+	 * This function provides help information about the menu commands.
+	 */
+	public static void menuHelp() {
+<span class="fc" id="L248">		System.out.println(&quot;======================= AJUDA DO MENU =========================&quot;);</span>
+<span class="fc" id="L249">		System.out.println(&quot;Digite um dos comandos abaixo para interagir com o jogo:&quot;);</span>
+<span class="fc" id="L250">		System.out.println(&quot;- &quot; + GERAFROTA + &quot;: Gera uma frota aleatória de navios.&quot;);</span>
+<span class="fc" id="L251">		System.out.println(&quot;- &quot; + LEFROTA + &quot;: Permite criar e carregar uma frota personalizada.&quot;);</span>
+<span class="fc" id="L252">		System.out.println(&quot;- &quot; + STATUS + &quot;: Mostra o status atual da frota.)&quot;);</span>
+<span class="fc" id="L253">		System.out.println(&quot;- &quot; + MAPA + &quot;: Exibe o mapa da frota.&quot;);</span>
+<span class="fc" id="L254">		System.out.println(&quot;- &quot; + RAJADA + &quot;: Realiza uma rajada de disparos.&quot;);</span>
+<span class="fc" id="L255">		System.out.println(&quot;- &quot; + SIMULA + &quot;: Simula um jogo completo.&quot;);</span>
+<span class="fc" id="L256">		System.out.println(&quot;- &quot; + TIROS + &quot;: Lista os tiros válidos realizados (* = tiro em navio, o = tiro na água)&quot;);</span>
+<span class="fc" id="L257">		System.out.println(&quot;- &quot; + EXPORTAR + &quot;: Exporta as rajadas da partida atual para CSV.&quot;);</span>
+<span class="fc" id="L258">		System.out.println(&quot;- &quot; + DESISTIR + &quot;: Encerra o jogo.&quot;);</span>
+<span class="fc" id="L259">		System.out.println(&quot;- gui: Reabre o tabuleiro no modo gráfico (mvn javafx:run).&quot;);</span>
+<span class="fc" id="L260">		System.out.println(&quot;- jogos: Lista os jogos guardados.&quot;);</span>
+<span class="fc" id="L261">		System.out.println(&quot;- historico ID_DO_JOGO: Mostra as jogadas desse jogo.&quot;);</span>
+<span class="fc" id="L262">		System.out.println(&quot;===============================================================&quot;);</span>
+<span class="fc" id="L263">	}</span>
+	/**
+	 * This operation allows the build up of a fleet, given user data
+	 *
+	 * @param in The scanner to read from
+	 * @return The fleet that has been built
+	 */
+	public static Fleet buildFleet(Scanner in) {
+
+<span class="fc bfc" id="L272" title="All 2 branches covered.">		assert in != null;</span>
+
+<span class="fc" id="L274">		Fleet fleet = new Fleet();</span>
+<span class="fc" id="L275">		int i = 0; // i represents the total of successfully created ships</span>
+<span class="fc bfc" id="L276" title="All 2 branches covered.">		while (i &lt; Fleet.FLEET_SIZE) {</span>
+<span class="fc" id="L277">			IShip s = readShip(in);</span>
+<span class="fc bfc" id="L278" title="All 2 branches covered.">			if (s != null) {</span>
+<span class="fc" id="L279">				boolean success = fleet.addShip(s);</span>
+<span class="fc bfc" id="L280" title="All 2 branches covered.">				if (success)</span>
+<span class="fc" id="L281">					i++;</span>
+				else
+<span class="fc" id="L283">					LOGGER.info(&quot;Falha na criacao de {} {} {}&quot;, s.getCategory(), s.getBearing(), s.getPosition());</span>
+<span class="fc" id="L284">			} else {</span>
+<span class="fc" id="L285">				LOGGER.info(&quot;Navio desconhecido!&quot;);</span>
+			}
+<span class="fc" id="L287">		}</span>
+<span class="fc" id="L288">		LOGGER.info(&quot;{} navios adicionados com sucesso!&quot;, i);</span>
+<span class="fc" id="L289">		return fleet;</span>
+	}
+
+	/**
+	 * This operation reads data about a ship, build it and returns it
+	 *
+	 * @param in The scanner to read from
+	 * @return The created ship based on the data that has been read
+	 */
+	public static Ship readShip(Scanner in) {
+
+<span class="fc bfc" id="L300" title="All 2 branches covered.">		assert in != null;</span>
+
+<span class="fc" id="L302">		String shipKind = in.next();</span>
+<span class="fc" id="L303">		Position pos = readPosition(in);</span>
+<span class="fc" id="L304">		char c = in.next().charAt(0);</span>
+<span class="fc" id="L305">		Compass bearing = Compass.charToCompass(c);</span>
+<span class="fc" id="L306">		return Ship.buildShip(shipKind, bearing, pos);</span>
+	}
+
+	/**
+	 * This operation allows reading a position in the map
+	 *
+	 * @param in The scanner to read from
+	 * @return The position that has been read
+	 */
+	public static Position readPosition(Scanner in) {
+
+<span class="fc bfc" id="L317" title="All 2 branches covered.">		assert in != null;</span>
+
+<span class="fc" id="L319">		int row = in.nextInt();</span>
+<span class="fc" id="L320">		int column = in.nextInt();</span>
+<span class="fc" id="L321">		return new Position(row, column);</span>
+	}
+
+	/**
+	 * This operation allows reading a position in the map
+	 *
+	 * @param in The scanner to read from
+	 * @return The classic position that has been read
+	 */
+	public static IPosition readClassicPosition(@NotNull Scanner in) {
+		// Verifica se ainda há tokens disponíveis
+<span class="fc bfc" id="L332" title="All 2 branches covered.">		if (!in.hasNext()) {</span>
+<span class="fc" id="L333">			throw new IllegalArgumentException(&quot;Nenhuma posição válida encontrada!&quot;);</span>
+		}
+
+<span class="fc" id="L336">		String part1 = in.next(); // Primeiro token</span>
+<span class="fc" id="L337">		String part2 = null;</span>
+
+<span class="fc bfc" id="L339" title="All 2 branches covered.">		if (in.hasNextInt()) {</span>
+<span class="fc" id="L340">			part2 = in.next(); // Segundo token, se disponível</span>
+		}
+
+<span class="fc bfc" id="L343" title="All 2 branches covered.">		String input = (part2 != null) ? part1 + part2 : part1;</span>
+
+		// Normalizar o input para tratar letras maiúsculas e minúsculas
+<span class="fc" id="L346">		input = input.toUpperCase();</span>
+
+		// Verificar os dois formatos possíveis: compactos e com espaço
+<span class="fc bfc" id="L349" title="All 2 branches covered.">		if (input.matches(&quot;[A-Z]\\d+&quot;)) {</span>
+<span class="fc" id="L350">			char column = input.charAt(0); // Extrair a coluna</span>
+<span class="fc" id="L351">			int row = Integer.parseInt(input.substring(1)); // Extrair a linha</span>
+<span class="fc" id="L352">			return new Position(column, row);</span>
+<span class="pc bpc" id="L353" title="3 of 6 branches missed.">		} else if (part2 != null &amp;&amp; part1.matches(&quot;[A-Z]&quot;) &amp;&amp; part2.matches(&quot;\\d+&quot;)) {</span>
+<span class="nc" id="L354">			char column = part1.charAt(0); // Extrair a coluna</span>
+<span class="nc" id="L355">			int row = Integer.parseInt(part2); // Extrair a linha</span>
+<span class="nc" id="L356">			return new Position(column, row);</span>
+		} else {
+<span class="fc" id="L358">			throw new IllegalArgumentException(&quot;Formato inválido. Use 'A3', 'A 3' ou similar.&quot;);</span>
+		}
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

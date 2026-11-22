@@ -19,6 +19,11 @@ import java.util.List;
 @RestController
 public class GameController {
 
+	private static final String STATUS_REGISTERED = "REGISTERED";
+	private static final String STATUS_ONGOING = "ONGOING";
+	private static final String STATUS_GAME_OVER = "GAME_OVER";
+	private static final String WINNER_STUDENT = "STUDENT_WINS";
+
 	private final GameRegistry registry;
 	private final CallbackClient callbackClient;
 	private final AiShotStrategy aiStrategy;
@@ -60,7 +65,7 @@ public class GameController {
 
 		RegistrationResponse response = new RegistrationResponse();
 		response.gameId       = session.getGameId();
-		response.status       = "REGISTERED";
+		response.status       = STATUS_REGISTERED;
 		response.shotsPerTurn = session.getShotsPerTurn();
 		response.message      = "Welcome, " + request.playerName + "! Game ready. You shoot first.";
 
@@ -122,8 +127,8 @@ public class GameController {
 		// ── 5. Check if student won (all AI ships sunk) ──────────────────────
 		if (game.getRemainingShips() == 0) {
 			session.markStudentWins();
-			m1bResponse.gameStatus = "GAME_OVER";
-			m1bResponse.winner     = "STUDENT_WINS";
+			m1bResponse.gameStatus = STATUS_GAME_OVER;
+			m1bResponse.winner     = WINNER_STUDENT;
 			System.out.printf("[%s] GAME OVER — student '%s' wins!%n",
 					gameId, session.getPlayerName());
 			return ResponseEntity.ok(m1bResponse);
@@ -168,7 +173,7 @@ public class GameController {
 		ShotResponse response  = new ShotResponse();
 		response.results       = results;
 		response.shipsRemaining = game.getRemainingShips();
-		response.gameStatus    = "ONGOING";
+		response.gameStatus    = STATUS_ONGOING;
 		response.winner        = null;
 		return response;
 	}
